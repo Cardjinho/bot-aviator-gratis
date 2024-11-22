@@ -4,7 +4,113 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aviator - Ganhe com Cassinos</title>
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Estilo geral */
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+      text-align: center;
+    }
+
+    /* Cabeçalho */
+    header {
+      background: #333;
+      color: #fff;
+      padding: 20px 0;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    header p {
+      font-size: 1.2em;
+    }
+
+    /* Seções principais */
+    main {
+      padding: 20px;
+    }
+
+    .promo, .contact {
+      margin: 20px 0;
+    }
+
+    .bonus-link, .whatsapp-link {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .bonus-link {
+      background-color: #28a745;
+    }
+
+    .whatsapp-link {
+      background-color: #25d366;
+    }
+
+    .bonus-link:hover, .whatsapp-link:hover {
+      opacity: 0.8;
+    }
+
+    /* Diálogo */
+    .dialog-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .dialog-box {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 80%;
+      max-width: 400px;
+    }
+
+    .dialog-box h2 {
+      margin-top: 0;
+    }
+
+    .dialog-box button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #28a745;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .dialog-box button:hover {
+      opacity: 0.9;
+    }
+
+    /* Rodapé */
+    footer {
+      background: #333;
+      color: #fff;
+      padding: 10px 0;
+      font-size: 0.9em;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -15,7 +121,7 @@
     <section class="promo">
       <h2>Bônus Exclusivo</h2>
       <p>Clique no link abaixo para aproveitar os melhores bônus:</p>
-      <a href="https://acessar.link/receber-bonus" class="bonus-link" target="_blank">Aproveite os Bônus!</a>
+      <a href="https://acessar.link/receber-bonus" class="bonus-link" target="_blank">CADASTRE-SE!</a>
     </section>
     <section class="contact">
       <h2>Contato pelo WhatsApp</h2>
@@ -23,8 +129,45 @@
       <a href="https://chat.whatsapp.com/Gchz9S2nZVZ72fX7qpEFzG" class="whatsapp-link" target="_blank">Acessar o Grupo</a>
     </section>
   </main>
+
+  <!-- Diálogo -->
+  <div class="dialog-overlay" id="dialog">
+    <div class="dialog-box">
+      <h2 id="dialog-message"></h2>
+      <button id="register-button">CADASTRE-SE</button>
+      <br>
+      <button onclick="closeDialog()">Fechar</button>
+    </div>
+  </div>
+
   <footer>
     <p>&copy; 2024 Ganhe com Aviator. Todos os direitos reservados.</p>
   </footer>
+
+  <script>
+    // Função para exibir a mensagem com base no horário
+    function showGreeting() {
+      const now = new Date();
+      const hour = now.getHours();
+      const dialogMessage = document.getElementById("dialog-message");
+
+      if (hour >= 6 && hour < 12) {
+        dialogMessage.textContent = "Bom dia caro usuário, Cadastre-se Clicando no botão escrito [ CADASTRE-SE ] e faça seu depósito para começar a Utilizar o bot gratuitamente...";
+      } else if (hour >= 12 && hour < 18) {
+        dialogMessage.textContent = "Boa tarde caro usuário, Cadastre-se Clicando no botão escrito [ CADASTRE-SE ] e faça seu depósito para começar a Utilizar o bot gratuitamente...";
+      } else {
+        dialogMessage.textContent = "Boa noite caro usuário, Cadastre-se Clicando no botão escrito [ CADASTRE-SE ] e faça seu depósito para começar a Utilizar o bot gratuitamente...";
+      }
+    }
+
+    // Função para fechar o diálogo
+    function closeDialog() {
+      const dialog = document.getElementById("dialog");
+      dialog.style.display = "none";
+    }
+
+    // Exibe a mensagem ao carregar a página
+    window.onload = showGreeting;
+  </script>
 </body>
-</html>
+  </html>
