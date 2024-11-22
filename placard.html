@@ -1,175 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Placard</title>
-  <style>
-    /* Reset default margin and padding for all elements */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="profile.css">
+    <title>Bot Gratuito</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #0f0;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
 
-    /* Set a background color for the entire page */
-    body {
-      background-color: #f0f0f0;
-      font-family: Arial, sans-serif;
-    }
+        .typing-text {
+            font-size: 15px;
+            color: #0f0;
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid #0f0;
+            animation: typing 4s steps(40, end), blink 0.5s step-end infinite;
+        }
 
-    /* Style the toolbar */
-    .toolbar {
-      background-color: #333;
-      color: white;
-      padding: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
 
-    /* Style the back button */
-    #backBtn {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 8px 15px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s;
-    }
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: #0f0; }
+        }
 
-    #backBtn:hover {
-      background-color: #0056b3;
-    }
+        .floating-button {
+            background-color: #00f;
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+            animation: float 2s infinite ease-in-out;
+            text-transform: uppercase;
+            margin-top: 20px;
+        }
 
-    /* Style the content container */
-    .content-container {
-      padding: 20px;
-    }
+        .floating-button:hover {
+            background-color: #0f0;
+            color: #00f;
+        }
 
-    /* Style the time square */
-    .time-square {
-      background-color: #007bff;
-      color: white;
-      padding: 10px;
-      border-radius: 5px;
-    }
-
-    /* Style the info square */
-    .info-square {
-      background-color: #28a745;
-      color: white;
-      padding: 10px;
-      border-radius: 5px;
-      margin-top: 10px;
-    }
-
-    /* Style the random time square */
-    .random-time-square {
-      background-color: #ffc107;
-      color: #333;
-      padding: 10px;
-      border-radius: 5px;
-      margin-top: 10px;
-    }
-
-    /* Style the iframe */
-    iframe {
-      width: 100%;
-      height: calc(100% - 50px);
-      border: none;
-      background-color: white;
-      border-radius: 5px;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Additional styles for text elements */
-    p {
-      margin: 0;
-    }
-  </style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+    </style>
 </head>
 <body>
-  <div class="toolbar">
-    <div class="time-square">
-      <p id="currentTime"></p>
+    <div class="profile-content">
+        <div class="typing-text">
+            SEJA BEM VINDO, CLIQUE NO BOTÃO ABAIXO PARA SE CADASTRAR EM DESFRUTAR DO NOSSO MELHOR ROBÔ 🤖.
+        </div>
+        <p style="margin-top: 20px; font-size: 15px;">
+            - CRIE UMA CONTA CLICANDO NO BOTÃO ABAIXO <br>
+            - FAÇA UM DEPÓSITO MÍNIMO DE 50MT <br><br>
+            O BOT IRÁ ATIVAR AUTOMATICAMENTE E JÁ PODE COMEÇAR A LUCRAR.
+        </p>
+        <button class="floating-button" onclick="window.location.href='https://acessar.link/receber-bonus'">
+            FAZER CADASTRO AGORA!
+        </button>
     </div>
-    <div class="info-square">
-      <p id="randomInfo"></p>
-    </div>
-    <div class="random-time-square">
-      <p id="randomTime"></p>
-    </div>
-    <div class="site-url-square">
-      <p><span id="siteUrl"></span></p>
-    </div>
-    <button id="backBtn">Voltar</button>
-  </div>
-  <iframe src="https://acessar.link/receber-bonus"></iframe>
-
-  <script>
-    const randomTimeSquare = document.getElementById("randomTime");
-    const backBtn = document.getElementById("backBtn");
-    const iframe = document.querySelector("iframe");
-
-    // Atualiza o URL do site dentro do iframe quando a navegação ocorre
-    iframe.addEventListener("load", () => {
-      document.getElementById("siteUrl").textContent = iframe.contentWindow.location.href;
-    });
-
-    // Botão de voltar
-    backBtn.addEventListener("click", () => {
-      window.history.back();
-    });
-
-    // Função para gerar informações aleatórias
-    function generateRandomInfo() {
-      const randomInfoArray = [
-        '10X', '10X', '2X', '7X', '9X', '2X', '3X', '4X', '5X', '8X', 'Rosa', '6X', '2X'
-      ];
-      const randomIndex = Math.floor(Math.random() * randomInfoArray.length);
-      return randomInfoArray[randomIndex];
-    }
-
-    // Atualiza o horário atual
-    function updateCurrentTime() {
-      const currentTime = new Date().toLocaleTimeString();
-      document.getElementById("currentTime").textContent = currentTime;
-    }
-
-    // Atualiza informações aleatórias
-    function updateRandomInfo() {
-      const randomInfo = generateRandomInfo();
-      document.getElementById("randomInfo").textContent = randomInfo;
-    }
-
-    // Função para gerar um horário aleatório com um intervalo de 2 minutos
-    function generateRandomTime() {
-      const currentTime = new Date();
-      const randomSeconds = Math.floor(Math.random() * 60); // Número entre 0 e 60
-      currentTime.setSeconds(currentTime.getSeconds() + randomSeconds);
-      return `Entrada: ${currentTime.toLocaleTimeString()}`;
-    }
-
-    // Atualiza o horário aleatório e as informações
-    function updateRandomTimeAndInfo() {
-      const randomTime = generateRandomTime();
-      const randomInfo = generateRandomInfo();
-
-      document.getElementById("randomTime").textContent = randomTime;
-      document.getElementById("randomInfo").textContent = randomInfo;
-    }
-
-    // Atualiza o tempo a cada segundo
-    setInterval(updateCurrentTime, 1000);
-
-    // Atualiza as informações aleatórias a cada minuto
-    setInterval(updateRandomInfo, 60000);
-
-    // Atualiza o horário aleatório e as informações a cada 2 minutos
-    setInterval(updateRandomTimeAndInfo, 120000);
-  </script>
 </body>
-  </html>
+</html>
