@@ -1,123 +1,177 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login no Bot</title>
+  <title>Login Avançado</title>
   <style>
+    /* Estilo geral */
     body {
+      font-family: 'Arial', sans-serif;
       margin: 0;
       padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      background-color: #ffffff;
-      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #6c63ff, #3b3b98);
+      overflow: hidden;
+      color: #fff;
     }
-    .login-btn {
-      padding: 15px 30px;
-      font-size: 18px;
-      font-weight: bold;
-      color: #ffffff;
-      background-color: #4CAF50;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      animation: fadeIn 1s ease-in-out;
     }
-    .login-btn:hover {
-      background-color: #45a049;
-      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 20px;
     }
-    .dialog {
-      display: none;
+
+    .form-group {
+      position: relative;
+      margin: 15px 0;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      outline: none;
+      transition: 0.3s ease-in-out;
+    }
+
+    .form-group input:focus {
+      background: rgba(255, 255, 255, 0.3);
+      border: 1px solid #fff;
+    }
+
+    .form-group label {
       position: absolute;
       top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #fff;
-      padding: 20px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-      border-radius: 8px;
+      left: 10px;
+      transform: translateY(-50%);
+      font-size: 1em;
+      color: rgba(255, 255, 255, 0.6);
+      pointer-events: none;
+      transition: 0.3s ease-in-out;
     }
-    .dialog p {
-      margin: 0;
-      font-size: 16px;
-      font-weight: bold;
-      text-align: center;
+
+    .form-group input:focus + label,
+    .form-group input:not(:placeholder-shown) + label {
+      top: -5px;
+      left: 10px;
+      font-size: 0.8em;
+      color: #fff;
+    }
+
+    .btn {
+      display: inline-block;
+      margin: 15px 5px;
+      padding: 10px 25px;
+      background: #6c63ff;
+      color: #fff;
+      text-transform: uppercase;
+      font-size: 0.9em;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+      transition: 0.3s ease-in-out;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .floating-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #3b3b98;
+      color: #fff;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .floating-btn:hover {
+      transform: scale(1.1);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
   </style>
 </head>
 <body>
-  <button class="login-btn" onclick="login()">Fazer Login no Bot</button>
-  <div id="dialog" class="dialog">
-    <p>Processando login...</p>
+  <div class="container">
+    <h1>Faça seu Login</h1>
+    <form>
+      <div class="form-group">
+        <input type="text" id="username" placeholder=" " required>
+        <label for="username">Nome de Usuário</label>
+      </div>
+      <div class="form-group">
+        <input type="password" id="password" placeholder=" " required>
+        <label for="password">Senha de Usuário</label>
+      </div>
+      <div class="form-group">
+        <input type="email" id="email" placeholder=" " required>
+        <label for="email">E-mail do Usuário</label>
+      </div>
+      <button type="button" class="btn" id="login-btn">Fazer Login</button>
+      <button type="button" class="btn" id="register-btn">Registrar</button>
+    </form>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js"></script>
+  <div class="floating-btn" id="help-btn">
+    ❓
+  </div>
 
   <script>
-    // Configuração do Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyCxBd5HkYL1h_zmUiEe2O-yM9n9KG1JMR4",
-      authDomain: "moz-payment.firebaseapp.com",
-      databaseURL: "https://moz-payment-default-rtdb.firebaseio.com",
-      projectId: "moz-payment",
-      storageBucket: "moz-payment.firebasestorage.app",
-      messagingSenderId: "730222511392",
-      appId: "1:730222511392:android:8f4eb879d03970ab5f8345"
-    };
+    // Animações e interação dos botões
+    document.getElementById("login-btn").addEventListener("click", () => {
+      alert("Login realizado com sucesso!");
+    });
 
-    // Inicialização do Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.getAuth(app);
-    const database = firebase.getDatabase(app);
+    document.getElementById("register-btn").addEventListener("click", () => {
+      alert("Registro realizado com sucesso!");
+    });
 
-    // Função para exibir o diálogo
-    function showDialog() {
-      document.getElementById('dialog').style.display = 'block';
-    }
-
-    // Função para ocultar o diálogo
-    function hideDialog() {
-      document.getElementById('dialog').style.display = 'none';
-    }
-
-    // Função de login
-    async function login() {
-      const provider = new firebase.GoogleAuthProvider();
-      showDialog();
-
-      try {
-        const result = await firebase.signInWithPopup(auth, provider);
-        const user = result.user;
-
-        // Verifica se o usuário já está registrado
-        const userRef = firebase.ref(database, 'users/' + user.uid);
-        const snapshot = await firebase.get(userRef);
-
-        if (!snapshot.exists()) {
-          // Registra o usuário no banco de dados
-          await firebase.set(userRef, {
-            name: user.displayName,
-            email: user.email,
-            createdAt: new Date().toISOString()
-          });
-        }
-
-        // Redireciona para a página placard.html
-        hideDialog();
-        window.location.href = "placard.html";
-      } catch (error) {
-        console.error("Erro ao fazer login:", error);
-        hideDialog();
-        alert("Falha ao fazer login. Tente novamente.");
-      }
-    }
+    document.getElementById("help-btn").addEventListener("click", () => {
+      alert("Precisa de ajuda? Entre em contato com o suporte!");
+    });
   </script>
 </body>
     </html>
