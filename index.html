@@ -82,12 +82,29 @@
         <p>
             Atenção: Crie sua conta enquanto estiver no bot.<br>
             Para os usuários com contas, aconselhamos criar novas contas.<br>
-            Caso esteja interessado na Versão Pro com 100% de eficiência, entre em contato: 258871009140.
+            Caso esteja interessado na Versão Pro com 100% de eficiência, entre em contato: 871009140.
         </p>
         <div id="enabled-buttons">
             <button id="button1">Elephantbets</button>
             <button id="button2">Placard</button>
         </div>
     </div>
+
+    <script>
+        // Redirecionar para elephant.html ao clicar no botão Elephantbets
+        document.getElementById('button1').addEventListener('click', function () {
+            window.location.href = 'elephant.html';
+        });
+
+        // Redirecionar para placard.index ao clicar no botão Placard
+        document.getElementById('button2').addEventListener('click', function () {
+            window.location.href = 'placard.html';
+        });
+
+        // Atualizar o navegador ao clicar no botão Sair
+        document.getElementById('logout-button').addEventListener('click', function () {
+            location.reload();
+        });
+    </script>
 </body>
-</html>
+    </html>
