@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="profile.css">
     <title>Bot Gratuito</title>
     <style>
         body {
@@ -15,14 +14,14 @@
             text-align: center;
         }
 
-        .typing-text {
+        .typing-container {
             font-size: 15px;
             color: #0f0;
-            display: inline-block;
+            white-space: pre-line; /* Permite quebra de linha no texto */
             overflow: hidden;
-            white-space: nowrap;
             border-right: 2px solid #0f0;
-            animation: typing 4s steps(40, end), blink 0.5s step-end infinite;
+            display: inline-block;
+            animation: typing 6s steps(60, end), blink 0.5s step-end infinite;
         }
 
         @keyframes typing {
@@ -63,14 +62,14 @@
 </head>
 <body>
     <div class="profile-content">
-        <div class="typing-text">
-            SEJA BEM VINDO, CLIQUE NO BOTÃO ABAIXO PARA SE CADASTRAR EM DESFRUTAR DO NOSSO MELHOR ROBÔ 🤖.
+        <div class="typing-container">
+SEJA BEM VINDO, CLIQUE NO BOTÃO ABAIXO PARA SE CADASTRAR EM DESFRUTAR DO NOSSO MELHOR ROBÔ 🤖.
+
+- CRIE UMA CONTA CLICANDO NO BOTÃO ABAIXO
+- FAÇA UM DEPÓSITO MÍNIMO DE 50MT
+
+O BOT IRÁ ATIVAR AUTOMATICAMENTE E JÁ PODE COMEÇAR A LUCRAR.
         </div>
-        <p style="margin-top: 20px; font-size: 15px;">
-            - CRIE UMA CONTA CLICANDO NO BOTÃO ABAIXO <br>
-            - FAÇA UM DEPÓSITO MÍNIMO DE 50MT <br><br>
-            O BOT IRÁ ATIVAR AUTOMATICAMENTE E JÁ PODE COMEÇAR A LUCRAR.
-        </p>
         <button class="floating-button" onclick="window.location.href='https://acessar.link/receber-bonus'">
             FAZER CADASTRO AGORA!
         </button>
