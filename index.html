@@ -26,109 +26,77 @@
       padding: 20px;
       box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
       text-align: center;
-      width: 280px;
+      width: 300px;
     }
 
     h1 {
       font-size: 1.8em;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
+      font-family: 'Arial', sans-serif;
     }
 
     .input-group {
-      margin: 10px 0;
+      margin: 15px 0;
+      text-align: left;
     }
 
     .input-group label {
       font-size: 0.9em;
-      display: block;
       margin-bottom: 5px;
+      display: block;
+      font-family: 'Arial', sans-serif;
     }
 
     .input-group input {
       width: 100%;
-      padding: 8px;
-      font-size: 0.9em;
-      border: none;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      padding: 10px;
+      font-size: 1em;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      outline: none;
+      transition: all 0.3s ease-in-out;
+      font-family: 'Arial', sans-serif;
+    }
+
+    .input-group input:focus {
+      border: 1px solid #fff;
+      background: rgba(255, 255, 255, 0.3);
     }
 
     button {
       display: inline-block;
-      padding: 10px 15px;
+      padding: 12px 20px;
       font-size: 1em;
       color: #fff;
       background: #2ecc71;
       border: none;
       border-radius: 5px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       cursor: pointer;
-      margin: 10px 0;
-      animation: float 3s ease-in-out infinite;
+      font-family: 'Arial', sans-serif;
+      transition: all 0.3s ease-in-out;
+      margin: 10px 5px;
     }
 
     button:hover {
       opacity: 0.9;
     }
 
-    /* Botão de ajuda */
-    .help-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #3498db;
-      animation: float 3s ease-in-out infinite;
+    button:active {
+      transform: translateY(2px);
     }
 
-    /* Diálogo estilizado */
-    .dialog-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      display: none;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .dialog {
-      background: #000;
-      color: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
-    }
-
-    .dialog h2 {
-      margin-bottom: 15px;
-    }
-
-    .dialog p {
-      font-size: 1em;
-      margin-bottom: 20px;
-    }
-
-    .dialog button {
-      padding: 10px 15px;
-      background: #25d366;
-      color: #fff;
-      border: none;
-      border-radius: 5px;
-      font-size: 1em;
-      cursor: pointer;
-    }
-
-    .dialog button:hover {
-      opacity: 0.9;
+    .error-message {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>Faça seu Login</h1>
+    <h1>Login</h1>
     <div class="input-group">
       <label for="username">Nome de Usuário</label>
       <input type="text" id="username" placeholder="Digite seu nome de usuário">
@@ -143,45 +111,60 @@
     </div>
     <button id="login-btn">Fazer Login</button>
     <button id="register-btn">Registrar</button>
+    <div class="error-message" id="error-message"></div>
   </div>
 
-  <!-- Botão de ajuda -->
-  <button class="help-btn" id="help-btn">
-    ℹ️ Ajuda
-  </button>
-
-  <!-- Diálogo -->
-  <div class="dialog-overlay" id="dialog-overlay">
-    <div class="dialog">
-      <h2>Ajuda</h2>
-      <p>Para ter mais suporte clique no botão de WhatsApp:</p>
-      <button id="whatsapp-btn">WhatsApp</button>
-    </div>
-  </div>
-
+  <!-- Firebase e lógica -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.8/firebase-auth.js"></script>
   <script>
-    // Selecionar elementos
-    const helpBtn = document.getElementById('help-btn');
-    const dialogOverlay = document.getElementById('dialog-overlay');
-    const whatsappBtn = document.getElementById('whatsapp-btn');
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCxBd5HkYL1h_zmUiEe2O-yM9n9KG1JMR4",
+      authDomain: "moz-payment.firebaseapp.com",
+      databaseURL: "https://moz-payment-default-rtdb.firebaseio.com",
+      projectId: "moz-payment",
+      storageBucket: "moz-payment.appspot.com",
+      messagingSenderId: "730222511392",
+      appId: "1:730222511392:android:8f4eb879d03970ab5f8345"
+    };
 
-    // Abrir o diálogo ao clicar no botão de ajuda
-    helpBtn.addEventListener('click', () => {
-      dialogOverlay.style.display = 'flex';
-    });
+    // Inicializar Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
-    // Redirecionar para o WhatsApp e fechar o diálogo
-    whatsappBtn.addEventListener('click', () => {
-      const whatsappUrl = 'https://wa.me/?text=Quero%20ter%20mais%20informa%C3%A7%C3%B5es%20do%20Rob%C3%B4%20Aviator.';
-      window.location.href = whatsappUrl;
-      dialogOverlay.style.display = 'none';
-    });
+    // Elementos da interface
+    const loginBtn = document.getElementById('login-btn');
+    const registerBtn = document.getElementById('register-btn');
+    const usernameInput = document.getElementById('username');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const errorMessage = document.getElementById('error-message');
 
-    // Fechar o diálogo ao clicar fora dele (opcional)
-    dialogOverlay.addEventListener('click', (event) => {
-      if (event.target === dialogOverlay) {
-        dialogOverlay.style.display = 'none';
+    // Lógica do botão de Login
+    loginBtn.addEventListener('click', () => {
+      const username = usernameInput.value.trim();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (!username || !email || !password) {
+        errorMessage.textContent = 'Por favor, preencha todos os campos!';
+        return;
       }
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          window.location.href = 'placard.html';
+        })
+        .catch((error) => {
+          errorMessage.textContent = 'Erro: Usuário ou senha inválidos!';
+          console.error(error);
+        });
+    });
+
+    // Lógica para o botão Registrar (opcional)
+    registerBtn.addEventListener('click', () => {
+      alert('Botão de Registrar em construção.');
     });
   </script>
 </body>
