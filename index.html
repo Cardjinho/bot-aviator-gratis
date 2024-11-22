@@ -1,110 +1,123 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bot Gratuito</title>
-    <style>
-        body {
-            font-family: 'Courier New', monospace;
-            background-color: #000;
-            color: #0f0;
-            font-size: 18px; /* Define o tamanho da fonte */
-            margin: 0;
-            padding: 0;
-        }
-
-        .toolbar {
-            background-color: #00f;
-            color: #0f0;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .profile-content {
-            background-color: #000;
-            padding: 20px;
-            margin: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
-        }
-
-        h1 {
-            font-size: 24px; /* Tamanho maior para o título */
-            margin-bottom: 10px;
-        }
-
-        p {
-            line-height: 1.5;
-        }
-
-        button {
-            background-color: #00f;
-            color: #0f0;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 5px;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        button:hover {
-            background-color: #0f0;
-            color: #00f;
-        }
-
-        #enabled-buttons {
-            margin-top: 20px;
-            text-align: center;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login no Bot</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #ffffff;
+      font-family: Arial, sans-serif;
+    }
+    .login-btn {
+      padding: 15px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffffff;
+      background-color: #4CAF50;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    .login-btn:hover {
+      background-color: #45a049;
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+    }
+    .dialog {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+    }
+    .dialog p {
+      margin: 0;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-    <div class="toolbar">
-        <img class="user-avatar" src="avatar.png" alt="Seu Avatar">
-        <button id="logout-button">Sair</button>
-    </div>
-    <div class="profile-content">
-        <h1>Bot Gratuito</h1>
-        <p>
-            Atenção: Crie sua conta enquanto estiver no bot.<br>
-            Para os usuários com contas, aconselhamos criar novas contas.<br>
-            Caso esteja interessado na Versão Pro com 100% de eficiência, entre em contato: 871009140.
-        </p>
-        <div id="enabled-buttons">
-            <button id="button1">Elephantbets</button>
-            <button id="button2">Placard</button>
-        </div>
-    </div>
+  <button class="login-btn" onclick="login()">Fazer Login no Bot</button>
+  <div id="dialog" class="dialog">
+    <p>Processando login...</p>
+  </div>
 
-    <script>
-        // Redirecionar para elephant.html ao clicar no botão Elephantbets
-        document.getElementById('button1').addEventListener('click', function () {
-            window.location.href = 'elephant.html';
-        });
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js"></script>
 
-        // Redirecionar para placard.index ao clicar no botão Placard
-        document.getElementById('button2').addEventListener('click', function () {
-            window.location.href = 'placard.html';
-        });
+  <script>
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCxBd5HkYL1h_zmUiEe2O-yM9n9KG1JMR4",
+      authDomain: "moz-payment.firebaseapp.com",
+      databaseURL: "https://moz-payment-default-rtdb.firebaseio.com",
+      projectId: "moz-payment",
+      storageBucket: "moz-payment.firebasestorage.app",
+      messagingSenderId: "730222511392",
+      appId: "1:730222511392:android:8f4eb879d03970ab5f8345"
+    };
 
-        // Atualizar o navegador ao clicar no botão Sair
-        document.getElementById('logout-button').addEventListener('click', function () {
-            location.reload();
-        });
-    </script>
+    // Inicialização do Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.getAuth(app);
+    const database = firebase.getDatabase(app);
+
+    // Função para exibir o diálogo
+    function showDialog() {
+      document.getElementById('dialog').style.display = 'block';
+    }
+
+    // Função para ocultar o diálogo
+    function hideDialog() {
+      document.getElementById('dialog').style.display = 'none';
+    }
+
+    // Função de login
+    async function login() {
+      const provider = new firebase.GoogleAuthProvider();
+      showDialog();
+
+      try {
+        const result = await firebase.signInWithPopup(auth, provider);
+        const user = result.user;
+
+        // Verifica se o usuário já está registrado
+        const userRef = firebase.ref(database, 'users/' + user.uid);
+        const snapshot = await firebase.get(userRef);
+
+        if (!snapshot.exists()) {
+          // Registra o usuário no banco de dados
+          await firebase.set(userRef, {
+            name: user.displayName,
+            email: user.email,
+            createdAt: new Date().toISOString()
+          });
+        }
+
+        // Redireciona para a página placard.html
+        hideDialog();
+        window.location.href = "placard.html";
+      } catch (error) {
+        console.error("Erro ao fazer login:", error);
+        hideDialog();
+        alert("Falha ao fazer login. Tente novamente.");
+      }
+    }
+  </script>
 </body>
     </html>
