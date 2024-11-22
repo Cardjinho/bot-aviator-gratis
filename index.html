@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Avançado</title>
+  <title>Login Avançado com Firebase</title>
   <style>
     /* Estilo geral */
     body {
@@ -23,10 +23,10 @@
       background: rgba(255, 255, 255, 0.15);
       backdrop-filter: blur(10px);
       border-radius: 20px;
-      padding: 20px 30px;
+      padding: 20px;
       box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
       text-align: center;
-      width: 350px;
+      width: 280px; /* Ajustado */
     }
 
     h1 {
@@ -34,146 +34,144 @@
       margin-bottom: 15px;
     }
 
-    .form-group {
-      position: relative;
+    .input-group {
       margin: 10px 0;
     }
 
-    .form-group input {
+    .input-group label {
+      font-size: 0.9em;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .input-group input {
       width: 100%;
-      padding: 10px 10px;
+      padding: 8px;
       font-size: 0.9em;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.2);
-      color: #fff;
-      outline: none;
-      transition: all 0.3s ease-in-out;
-    }
-
-    .form-group input:focus {
-      background: rgba(255, 255, 255, 0.3);
-      border: 1px solid #fff;
-    }
-
-    .form-group label {
-      position: absolute;
-      top: 50%;
-      left: 10px;
-      transform: translateY(-50%);
-      font-size: 0.9em;
-      color: rgba(255, 255, 255, 0.7);
-      pointer-events: none;
-      transition: 0.3s ease-in-out;
-    }
-
-    .form-group input:focus + label,
-    .form-group input:not(:placeholder-shown) + label {
-      top: -5px;
-      left: 10px;
-      font-size: 0.75em;
-      color: #fff;
-    }
-
-    .btn {
-      display: inline-block;
-      margin: 15px 5px;
-      padding: 10px 20px;
-      font-size: 0.9em;
-      color: #fff;
-      text-transform: uppercase;
       border: none;
-      border-radius: 50px;
-      background: #1e90ff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    button {
+      display: inline-block;
+      padding: 10px 15px;
+      font-size: 1em;
+      color: #fff;
+      background: #2ecc71;
+      border: none;
+      border-radius: 5px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       cursor: pointer;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-      transition: 0.3s ease-in-out;
+      margin: 10px 0;
+      animation: float 3s ease-in-out infinite; /* Animação flutuante */
     }
 
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.5);
+    button:hover {
+      opacity: 0.9;
     }
 
-    .btn:active {
-      transform: translateY(1px);
-    }
-
-    .floating-btn {
+    /* Botão de ajuda */
+    .help-btn {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background: #ff5733;
-      color: #fff;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.4);
-      cursor: pointer;
-      transition: transform 0.3s ease-in-out;
+      background: #3498db;
+      animation: float 3s ease-in-out infinite;
     }
 
-    .floating-btn:hover {
-      transform: translateY(-5px) rotate(10deg);
-    }
-
-    /* Animações de entrada para o botão flutuante */
+    /* Animação flutuante */
     @keyframes float {
       0%, 100% {
         transform: translateY(0);
       }
       50% {
-        transform: translateY(-15px);
+        transform: translateY(-10px);
       }
-    }
-
-    .floating-btn {
-      animation: float 3s infinite ease-in-out;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Faça seu Login</h1>
-    <form>
-      <div class="form-group">
-        <input type="text" id="username" placeholder=" " required>
-        <label for="username">Nome de Usuário</label>
-      </div>
-      <div class="form-group">
-        <input type="password" id="password" placeholder=" " required>
-        <label for="password">Senha de Usuário</label>
-      </div>
-      <div class="form-group">
-        <input type="email" id="email" placeholder=" " required>
-        <label for="email">E-mail do Usuário</label>
-      </div>
-      <button type="button" class="btn" id="login-btn">Fazer Login</button>
-      <button type="button" class="btn" id="register-btn">Registrar</button>
-    </form>
+    <div class="input-group">
+      <label for="username">Nome de Usuário</label>
+      <input type="text" id="username" placeholder="Digite seu nome de usuário">
+    </div>
+    <div class="input-group">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" placeholder="Digite seu e-mail">
+    </div>
+    <div class="input-group">
+      <label for="password">Senha</label>
+      <input type="password" id="password" placeholder="Digite sua senha">
+    </div>
+    <button id="login-btn">Fazer Login</button>
+    <button id="register-btn">Registrar</button>
   </div>
 
-  <div class="floating-btn" id="help-btn">
-    ℹ️
-  </div>
+  <!-- Botão de ajuda -->
+  <button class="help-btn" id="help-btn">
+    ℹ️ Ajuda
+  </button>
 
+  <!-- Firebase e lógica -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js"></script>
   <script>
-    // Evento do botão de ajuda
-    document.getElementById("help-btn").addEventListener("click", () => {
-      alert("Contacte o proprietário: Para mais informações.\n\nPROGRAMADOR:\nMILIONARIO MODZ");
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCxBd5HkYL1h_zmUiEe2O-yM9n9KG1JMR4",
+      authDomain: "moz-payment.firebaseapp.com",
+      databaseURL: "https://moz-payment-default-rtdb.firebaseio.com",
+      projectId: "moz-payment",
+      storageBucket: "moz-payment.appspot.com",
+      messagingSenderId: "730222511392",
+      appId: "1:730222511392:android:8f4eb879d03970ab5f8345"
+    };
+
+    // Inicializar Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    // Botões e campos
+    const loginBtn = document.getElementById('login-btn');
+    const usernameInput = document.getElementById('username');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const helpBtn = document.getElementById('help-btn');
+
+    // Lógica de validação
+    loginBtn.addEventListener('click', () => {
+      const username = usernameInput.value.trim();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (!username || !email || !password) {
+        alert('Preencha todos os campos!');
+        return;
+      }
+
+      // Validar e-mail e senha no Firebase
+      const userRef = firebase.database().ref('users');
+      userRef.orderByChild('email').equalTo(email).once('value', (snapshot) => {
+        if (snapshot.exists()) {
+          const userData = Object.values(snapshot.val())[0];
+          if (userData.password === password) {
+            alert('Login bem-sucedido!');
+          } else {
+            alert('Senha incorreta!');
+          }
+        } else {
+          alert('Usuário não encontrado!');
+        }
+      });
     });
 
-    // Eventos dos botões de Login e Registrar
-    document.getElementById("login-btn").addEventListener("click", () => {
-      alert("Login realizado com sucesso!");
-    });
-
-    document.getElementById("register-btn").addEventListener("click", () => {
-      alert("Registro realizado com sucesso!");
+    // Botão de ajuda
+    helpBtn.addEventListener('click', () => {
+      alert('Contacte o proprietário: Para mais informações. ℹ️\n\nPROGRAMADOR: MILIONARIO MODZ');
     });
   </script>
 </body>
-  </html>
+    </html>
