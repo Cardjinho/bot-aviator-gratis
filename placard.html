@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Placard</title>
+  <style>
+    /* Reset default margin and padding for all elements */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Set a background color for the entire page */
+    body {
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+
+    /* Style the toolbar */
+    .toolbar {
+      background-color: #333;
+      color: white;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Style the back button */
+    #backBtn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 15px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    #backBtn:hover {
+      background-color: #0056b3;
+    }
+
+    /* Style the content container */
+    .content-container {
+      padding: 20px;
+    }
+
+    /* Style the time square */
+    .time-square {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    /* Style the info square */
+    .info-square {
+      background-color: #28a745;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    /* Style the random time square */
+    .random-time-square {
+      background-color: #ffc107;
+      color: #333;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    /* Style the iframe */
+    iframe {
+      width: 100%;
+      height: calc(100% - 50px);
+      border: none;
+      background-color: white;
+      border-radius: 5px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Additional styles for text elements */
+    p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <div class="time-square">
+      <p id="currentTime"></p>
+    </div>
+    <div class="info-square">
+      <p id="randomInfo"></p>
+    </div>
+    <div class="random-time-square">
+      <p id="randomTime"></p>
+    </div>
+    <div class="site-url-square">
+      <p><span id="siteUrl"></span></p>
+    </div>
+    <button id="backBtn">Voltar</button>
+  </div>
+  <iframe src="https://acessar.link/receber-bonus"></iframe>
+
+  <script>
+    const randomTimeSquare = document.getElementById("randomTime");
+    const backBtn = document.getElementById("backBtn");
+    const iframe = document.querySelector("iframe");
+
+    // Atualiza o URL do site dentro do iframe quando a navegação ocorre
+    iframe.addEventListener("load", () => {
+      document.getElementById("siteUrl").textContent = iframe.contentWindow.location.href;
+    });
+
+    // Botão de voltar
+    backBtn.addEventListener("click", () => {
+      window.history.back();
+    });
+
+    // Função para gerar informações aleatórias
+    function generateRandomInfo() {
+      const randomInfoArray = [
+        '10X', '10X', '2X', '7X', '9X', '2X', '3X', '4X', '5X', '8X', 'Rosa', '6X', '2X'
+      ];
+      const randomIndex = Math.floor(Math.random() * randomInfoArray.length);
+      return randomInfoArray[randomIndex];
+    }
+
+    // Atualiza o horário atual
+    function updateCurrentTime() {
+      const currentTime = new Date().toLocaleTimeString();
+      document.getElementById("currentTime").textContent = currentTime;
+    }
+
+    // Atualiza informações aleatórias
+    function updateRandomInfo() {
+      const randomInfo = generateRandomInfo();
+      document.getElementById("randomInfo").textContent = randomInfo;
+    }
+
+    // Função para gerar um horário aleatório com um intervalo de 2 minutos
+    function generateRandomTime() {
+      const currentTime = new Date();
+      const randomSeconds = Math.floor(Math.random() * 60); // Número entre 0 e 60
+      currentTime.setSeconds(currentTime.getSeconds() + randomSeconds);
+      return `Entrada: ${currentTime.toLocaleTimeString()}`;
+    }
+
+    // Atualiza o horário aleatório e as informações
+    function updateRandomTimeAndInfo() {
+      const randomTime = generateRandomTime();
+      const randomInfo = generateRandomInfo();
+
+      document.getElementById("randomTime").textContent = randomTime;
+      document.getElementById("randomInfo").textContent = randomInfo;
+    }
+
+    // Atualiza o tempo a cada segundo
+    setInterval(updateCurrentTime, 1000);
+
+    // Atualiza as informações aleatórias a cada minuto
+    setInterval(updateRandomInfo, 60000);
+
+    // Atualiza o horário aleatório e as informações a cada 2 minutos
+    setInterval(updateRandomTimeAndInfo, 120000);
+  </script>
+</body>
+  </html>
