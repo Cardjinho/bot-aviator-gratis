@@ -26,7 +26,7 @@
       padding: 20px;
       box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.3);
       text-align: center;
-      width: 280px; /* Ajustado */
+      width: 280px;
     }
 
     h1 {
@@ -64,7 +64,7 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
       cursor: pointer;
       margin: 10px 0;
-      animation: float 3s ease-in-out infinite; /* Animação flutuante */
+      animation: float 3s ease-in-out infinite;
     }
 
     button:hover {
@@ -80,14 +80,49 @@
       animation: float 3s ease-in-out infinite;
     }
 
-    /* Animação flutuante */
-    @keyframes float {
-      0%, 100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
+    /* Diálogo estilizado */
+    .dialog-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .dialog {
+      background: #000;
+      color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .dialog h2 {
+      margin-bottom: 15px;
+    }
+
+    .dialog p {
+      font-size: 1em;
+      margin-bottom: 20px;
+    }
+
+    .dialog button {
+      padding: 10px 15px;
+      background: #25d366;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    .dialog button:hover {
+      opacity: 0.9;
     }
   </style>
 </head>
@@ -115,63 +150,39 @@
     ℹ️ Ajuda
   </button>
 
-  <!-- Firebase e lógica -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.8/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.8/firebase-database.js"></script>
+  <!-- Diálogo -->
+  <div class="dialog-overlay" id="dialog-overlay">
+    <div class="dialog">
+      <h2>Ajuda</h2>
+      <p>Para ter mais suporte clique no botão de WhatsApp:</p>
+      <button id="whatsapp-btn">WhatsApp</button>
+    </div>
+  </div>
+
   <script>
-    // Configuração do Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyCxBd5HkYL1h_zmUiEe2O-yM9n9KG1JMR4",
-      authDomain: "moz-payment.firebaseapp.com",
-      databaseURL: "https://moz-payment-default-rtdb.firebaseio.com",
-      projectId: "moz-payment",
-      storageBucket: "moz-payment.appspot.com",
-      messagingSenderId: "730222511392",
-      appId: "1:730222511392:android:8f4eb879d03970ab5f8345"
-    };
-
-    // Inicializar Firebase
-    const app = firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
-
-    // Botões e campos
-    const loginBtn = document.getElementById('login-btn');
-    const usernameInput = document.getElementById('username');
-    const emailInput = document.getElementById('email');
-    const passwordInput = document.getElementById('password');
+    // Selecionar elementos
     const helpBtn = document.getElementById('help-btn');
+    const dialogOverlay = document.getElementById('dialog-overlay');
+    const whatsappBtn = document.getElementById('whatsapp-btn');
 
-    // Lógica de validação
-    loginBtn.addEventListener('click', () => {
-      const username = usernameInput.value.trim();
-      const email = emailInput.value.trim();
-      const password = passwordInput.value.trim();
-
-      if (!username || !email || !password) {
-        alert('Preencha todos os campos!');
-        return;
-      }
-
-      // Validar e-mail e senha no Firebase
-      const userRef = firebase.database().ref('users');
-      userRef.orderByChild('email').equalTo(email).once('value', (snapshot) => {
-        if (snapshot.exists()) {
-          const userData = Object.values(snapshot.val())[0];
-          if (userData.password === password) {
-            alert('Login bem-sucedido!');
-          } else {
-            alert('Senha incorreta!');
-          }
-        } else {
-          alert('Usuário não encontrado!');
-        }
-      });
+    // Abrir o diálogo ao clicar no botão de ajuda
+    helpBtn.addEventListener('click', () => {
+      dialogOverlay.style.display = 'flex';
     });
 
-    // Botão de ajuda
-    helpBtn.addEventListener('click', () => {
-      alert('Contacte o proprietário: Para mais informações. ℹ️\n\nPROGRAMADOR: MILIONARIO MODZ');
+    // Redirecionar para o WhatsApp e fechar o diálogo
+    whatsappBtn.addEventListener('click', () => {
+      const whatsappUrl = 'https://wa.me/?text=Quero%20ter%20mais%20informa%C3%A7%C3%B5es%20do%20Rob%C3%B4%20Aviator.';
+      window.location.href = whatsappUrl;
+      dialogOverlay.style.display = 'none';
+    });
+
+    // Fechar o diálogo ao clicar fora dele (opcional)
+    dialogOverlay.addEventListener('click', (event) => {
+      if (event.target === dialogOverlay) {
+        dialogOverlay.style.display = 'none';
+      }
     });
   </script>
 </body>
-    </html>
+</html>
