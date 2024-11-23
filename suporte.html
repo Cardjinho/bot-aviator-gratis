@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Suporte</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            width: 90%;
+            max-width: 400px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #444;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: block;
+            color: #666;
+        }
+
+        .form-group input, 
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            color: #4caf50;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Entre em Contato</h2>
+        <form id="supportForm">
+            <div class="form-group">
+                <label for="email">Coloque seu e-mail:</label>
+                <input type="email" id="email" placeholder="Digite seu e-mail" required>
+            </div>
+            <div class="form-group">
+                <label for="name">Coloque seu nome:</label>
+                <input type="text" id="name" placeholder="Digite seu nome" required>
+            </div>
+            <div class="form-group">
+                <label for="number">Coloque seu número:</label>
+                <input type="tel" id="number" placeholder="Digite seu número" required>
+            </div>
+            <div class="form-group">
+                <label for="problem">Descreva o problema:</label>
+                <textarea id="problem" placeholder="Digite seu problema"></textarea>
+            </div>
+            <button type="submit">Enviar Mensagem</button>
+        </form>
+        <p class="success-message" id="successMessage">Mensagem enviada com sucesso! Aguarde até 12h para nossa resposta.</p>
+    </div>
+
+    <script>
+        document.getElementById("supportForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Evita recarregar a página
+
+            // Capturar os valores do formulário
+            const email = document.getElementById("email").value.trim();
+            const name = document.getElementById("name").value.trim();
+            const number = document.getElementById("number").value.trim();
+            const problem = document.getElementById("problem").value.trim();
+
+            // Verificar se todos os campos foram preenchidos
+            if (!email || !name || !number || !problem) {
+                alert("Por favor, preencha todos os campos.");
+                return;
+            }
+
+            // Enviar para o e-mail (simulado no console para fins de exemplo)
+            console.log(`E-mail enviado para Scorp742@gmail.com com os dados:
+                E-mail: ${email}
+                Nome: ${name}
+                Número: ${number}
+                Problema: ${problem}`);
+
+            // Mostrar mensagem de sucesso
+            document.getElementById("successMessage").style.display = "block";
+
+            // Limpar os campos
+            document.getElementById("supportForm").reset();
+        });
+    </script>
+</body>
+  </html>
