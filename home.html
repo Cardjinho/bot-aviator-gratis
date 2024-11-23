@@ -34,6 +34,33 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
+        .form-container input,
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .form-container button {
+            background: #d32f2f;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+        }
+
+        .payment-methods {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .payment-methods img {
+            width: 25px; /* Tamanho da imagem ajustado */
+            margin: 0 5px;
+        }
+
         footer {
             text-align: center;
             margin-top: 20px;
@@ -49,8 +76,22 @@
 
     <div class="form-container">
         <h3>Compra 100% Segura</h3>
-        <p>Adicione seus dados para prosseguir com o pagamento.</p>
-        <p>Retorno Número: <b>876500685</b> <button onclick="copyNumber()">Copiar</button></p>
+        <form>
+            <label>Digite seu nome completo:</label>
+            <input type="text" placeholder="Digite seu nome completo" required>
+            
+            <label>Digite seu número WhatsApp:</label>
+            <input type="tel" placeholder="Digite seu WhatsApp" required>
+            
+            <label>Digite seu número M-Pesa:</label>
+            <input type="tel" placeholder="Digite seu número M-Pesa" required>
+        </form>
+        
+        <div class="payment-methods">
+            <p>Escolha seu método de pagamento:</p>
+            <img src="https://play-lh.googleusercontent.com/2TGAhJ55tiyhCwW0ZM43deGv4lUTFTBMoq83mnAO6-bU5hi2NPyKX8BN8iKt13irK7Y" alt="e-Mola">
+        </div>
+
         <button id="startPayment">Iniciar Pagamento</button>
     </div>
 
@@ -72,7 +113,7 @@
             // Quando o tempo acabar, redireciona para outra página
             if (totalTime === 0) {
                 clearInterval(timerInterval);
-                window.location.href = "home.html";
+                window.location.href = "index.html";
             } else {
                 totalTime--;
             }
@@ -81,17 +122,10 @@
         // Inicia o cronômetro
         const timerInterval = setInterval(updateTimer, 1000);
 
-        // Função para copiar o número
-        function copyNumber() {
-            navigator.clipboard.writeText("876500685").then(() => {
-                alert("Número copiado: 876500685");
-            });
-        }
-
         // Função para iniciar pagamento (simula chamada telefônica)
         document.getElementById("startPayment").addEventListener("click", () => {
             window.location.href = "tel:*898#";
         });
     </script>
 </body>
-    </html>
+            </html>
