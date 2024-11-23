@@ -45,7 +45,7 @@
             display: block;
         }
 
-        input[type="text"], input[type="email"], input[type="tel"] {
+        input[type="text"], input[type="tel"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 20px;
@@ -56,11 +56,13 @@
         .payment-options {
             display: flex;
             justify-content: space-between;
+            gap: 10px;
             margin-bottom: 20px;
         }
 
         .payment-options img {
-            width: 100px;
+            width: 100%;
+            max-width: 130px;
             height: auto;
             cursor: pointer;
             border-radius: 8px;
@@ -120,11 +122,39 @@
             margin-top: 20px;
             font-size: 12px;
         }
+
+        /* Estilos responsivos */
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 15px;
+            }
+
+            .payment-options {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .payment-options img {
+                max-width: 200px;
+                margin-bottom: 10px;
+            }
+
+            .copy-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .copy-section button {
+                align-self: center;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
-        <div class="timer">00 : 03 : 09</div>
+        <div class="timer">00 : 10 : 00</div>
         <p>Preencha os seus dados antes que o cronômetro termine</p>
     </header>
 
@@ -133,9 +163,6 @@
         <form>
             <label for="full-name">Nome completo:</label>
             <input type="text" id="full-name" placeholder="Digite seu nome completo" required>
-
-            <label for="email">E-mail:</label>
-            <input type="email" id="email" placeholder="Digite seu melhor e-mail" required>
 
             <label for="whatsapp">Número de Retorno:</label>
             <input type="tel" id="whatsapp" placeholder="Digite o número de retorno" required>
@@ -150,7 +177,7 @@
 
             <div class="payment-options">
                 <img src="mpesa.png" alt="M-Pesa" title="M-Pesa">
-                <img src="emola.png" alt="e-Mola" title="e-Mola">
+                <img src="https://play-lh.googleusercontent.com/2TGAhJ55tiyhCwW0ZM43deGv4lUTFTBMoq83mnAO6-bU5hi2NPyKX8BN8iKt13irK7Y" alt="e-Mola" title="e-Mola">
             </div>
 
             <button type="button" class="pay-btn" id="pay-btn">Iniciar Pagamento</button>
@@ -178,4 +205,4 @@
         });
     </script>
 </body>
-  </html>
+    </html>
