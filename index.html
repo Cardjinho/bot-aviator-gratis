@@ -127,6 +127,33 @@
                 text-align: center;
             }
         }
+
+        /* Estilo para o FAB */
+        .fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ffa500;
+            color: #fff;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .fab img {
+            width: 32px;
+            height: 32px;
+        }
+
+        .fab:hover {
+            background-color: #ff7f00;
+        }
     </style>
 </head>
 <body>
@@ -188,8 +215,18 @@
         <p>© 2024 Tabela de Investimentos. Todos os direitos reservados.</p>
     </footer>
 
+    <!-- Botão Flutuante (FAB) -->
+    <div class="fab" id="fab">
+        <img src="https://cdn-icons-png.flaticon.com/512/1028/1028931.png" alt="Suporte">
+    </div>
+
     <script>
-        // Adicionar evento de clique para redirecionar
+        // Redirecionar para "suporte.html" ao clicar na FAB
+        document.getElementById("fab").addEventListener("click", () => {
+            window.location.href = "suporte.html";
+        });
+
+        // Adicionar evento de clique para os botões "Investir"
         document.querySelectorAll(".invest-btn").forEach(button => {
             button.addEventListener("click", () => {
                 window.location.href = "home.html";
@@ -197,4 +234,4 @@
         });
     </script>
 </body>
-                </html>
+    </html>
