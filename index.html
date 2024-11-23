@@ -154,7 +154,63 @@
         .fab:hover {
             background-color: #ff7f00;
         }
+
+        /* Estilo para o diálogo */
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .dialog {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            color: #333;
+        }
+
+        .dialog h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .dialog p {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .dialog .close-btn {
+            background: #ff7f00;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .dialog .close-btn:hover {
+            background: #e56700;
+        }
+
+        .hidden {
+            display: none;
+        }
     </style>
+    <link rel="icon" href="https://adioma.com/icons/money">
+    <meta property="og:image" content="https://adioma.com/icons/money">
 </head>
 <body>
     <header>
@@ -182,31 +238,6 @@
                     <td data-label="Retorno (MZN)">2000.00</td>
                     <td data-label="Ação"><button class="invest-btn">Investir</button></td>
                 </tr>
-                <tr>
-                    <td data-label="Investimento (MZN)">1000.00</td>
-                    <td data-label="Retorno (MZN)">4000.00</td>
-                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
-                </tr>
-                <tr>
-                    <td data-label="Investimento (MZN)">1500.00</td>
-                    <td data-label="Retorno (MZN)">6000.00</td>
-                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
-                </tr>
-                <tr>
-                    <td data-label="Investimento (MZN)">2000.00</td>
-                    <td data-label="Retorno (MZN)">8000.00</td>
-                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
-                </tr>
-                <tr>
-                    <td data-label="Investimento (MZN)">3000.00</td>
-                    <td data-label="Retorno (MZN)">12000.00</td>
-                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
-                </tr>
-                <tr>
-                    <td data-label="Investimento (MZN)">5000.00</td>
-                    <td data-label="Retorno (MZN)">20000.00</td>
-                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
-                </tr>
             </tbody>
         </table>
     </div>
@@ -215,23 +246,30 @@
         <p>© 2024 Tabela de Investimentos. Todos os direitos reservados.</p>
     </footer>
 
-    <!-- Botão Flutuante (FAB) -->
     <div class="fab" id="fab">
         <img src="https://cdn-icons-png.flaticon.com/512/1028/1028931.png" alt="Suporte">
     </div>
 
+    <!-- Diálogo -->
+    <div class="dialog-overlay hidden" id="dialog">
+        <div class="dialog">
+            <h2>COMO FUNCIONA O INVESTIMENTO ℹ️</h2>
+            <p>Funciona de forma simples e rápida, com duração de apenas 50 minutos para o retorno. Utilizamos estratégias garantidas na plataforma Aviator, aplicando seu valor com a certeza de 100% de lucro, sem qualquer risco de perda.</p>
+            <p>Após o investimento, em apenas 50 minutos, o valor é multiplicado e devolvido direto para você. É rápido, seguro e 100% confiável para quem quer resultados imediatos!</p>
+            <button class="close-btn" id="close-dialog">Fechar 💬</button>
+        </div>
+    </div>
+
     <script>
-        // Redirecionar para "suporte.html" ao clicar na FAB
+        // Exibir o diálogo ao clicar na FAB
         document.getElementById("fab").addEventListener("click", () => {
-            window.location.href = "suporte.html";
+            document.getElementById("dialog").classList.remove("hidden");
         });
 
-        // Adicionar evento de clique para os botões "Investir"
-        document.querySelectorAll(".invest-btn").forEach(button => {
-            button.addEventListener("click", () => {
-                window.location.href = "home.html";
-            });
+        // Fechar o diálogo ao clicar no botão fechar
+        document.getElementById("close-dialog").addEventListener("click", () => {
+            document.getElementById("dialog").classList.add("hidden");
         });
     </script>
 </body>
-    </html>
+</html>
