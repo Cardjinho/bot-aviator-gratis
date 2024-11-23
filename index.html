@@ -148,37 +148,37 @@
                 <tr>
                     <td data-label="Investimento (MZN)">250.00</td>
                     <td data-label="Retorno (MZN)">1000.00</td>
-                    <td data-label="Ação"><button>Investir</button></td>
+                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
                 </tr>
                 <tr>
                     <td data-label="Investimento (MZN)">500.00</td>
                     <td data-label="Retorno (MZN)">2000.00</td>
-                    <td data-label="Ação"><button>Investir</button></td>
+                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
                 </tr>
                 <tr>
                     <td data-label="Investimento (MZN)">1000.00</td>
                     <td data-label="Retorno (MZN)">4000.00</td>
-                    <td data-label="Ação"><button>Investir</button></td>
+                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
                 </tr>
                 <tr>
                     <td data-label="Investimento (MZN)">1500.00</td>
                     <td data-label="Retorno (MZN)">6000.00</td>
-                    <td data-label="Ação"><button>Investir</button></td>
+                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
                 </tr>
                 <tr>
                     <td data-label="Investimento (MZN)">2000.00</td>
                     <td data-label="Retorno (MZN)">8000.00</td>
-                    <td data-label="Ação"><button>Investir</button></td>
+                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
                 </tr>
                 <tr>
                     <td data-label="Investimento (MZN)">3000.00</td>
                     <td data-label="Retorno (MZN)">12000.00</td>
-                    <td data-label="Ação"><button>Investir</button></td>
+                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
                 </tr>
                 <tr>
                     <td data-label="Investimento (MZN)">5000.00</td>
                     <td data-label="Retorno (MZN)">20000.00</td>
-                    <td data-label="Ação"><button>Investir</button></td>
+                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
                 </tr>
             </tbody>
         </table>
@@ -189,11 +189,12 @@
     </footer>
 
     <script>
-        document.querySelectorAll("button").forEach(btn => {
-            btn.addEventListener("click", () => {
-                alert("Obrigado por investir! Estamos processando sua solicitação.");
+        // Adicionar evento de clique para redirecionar
+        document.querySelectorAll(".invest-btn").forEach(button => {
+            button.addEventListener("click", () => {
+                window.location.href = "home.html";
             });
         });
     </script>
 </body>
-                                              </html>
+                </html>
