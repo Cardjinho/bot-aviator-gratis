@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout com Cronômetro</title>
+    <title> Pagamento</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,7 +21,7 @@
         }
 
         .timer {
-            font-size: 18px;
+            font-size: 14px;
             font-weight: bold;
         }
 
@@ -34,31 +34,85 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .form-container input,
-        .form-container button {
+        .form-container h3 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        label {
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        input[type="text"], input[type="tel"] {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
-            font-size: 16px;
-            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
             border-radius: 4px;
         }
 
-        .form-container button {
+        .payment-options {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .payment-options img {
+            width: 40px; /* Tamanho ajustado */
+            height: auto;
+            cursor: pointer;
+            border-radius: 8px;
+            border: 2px solid transparent;
+        }
+
+        .payment-options img:hover {
+            border: 2px solid #d32f2f;
+        }
+
+        .copy-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+
+        .copy-section span {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .copy-section button {
             background: #d32f2f;
             color: #fff;
-            cursor: pointer;
             border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
         }
 
-        .payment-methods {
-            text-align: center;
-            margin: 10px 0;
+        .copy-section button:hover {
+            background: #b71c1c;
         }
 
-        .payment-methods img {
-            width: 25px; /* Tamanho da imagem ajustado */
-            margin: 0 5px;
+        button.pay-btn {
+            width: 100%;
+            background: #d32f2f;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button.pay-btn:hover {
+            background: #b71c1c;
         }
 
         footer {
@@ -66,33 +120,60 @@
             margin-top: 20px;
             font-size: 12px;
         }
+
+        /* Estilos responsivos */
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 15px;
+            }
+
+            .payment-options {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .copy-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .copy-section button {
+                align-self: center;
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
-        <div class="timer" id="timer">00 : 10 : 00</div>
+        <div class="timer">00 : 03 : 09</div>
         <p>Preencha os seus dados antes que o cronômetro termine</p>
     </header>
 
     <div class="form-container">
         <h3>Compra 100% Segura</h3>
-        <form>
-            <label>Digite seu nome completo:</label>
-            <input type="text" placeholder="Digite seu nome completo" required>
-            
-            <label>Digite seu número WhatsApp:</label>
-            <input type="tel" placeholder="Digite seu WhatsApp" required>
-            
-            <label>Digite seu número M-Pesa:</label>
-            <input type="tel" placeholder="Digite seu número M-Pesa" required>
-        </form>
-        
-        <div class="payment-methods">
-            <p>Escolha seu método de pagamento:</p>
-            <img src="https://play-lh.googleusercontent.com/2TGAhJ55tiyhCwW0ZM43deGv4lUTFTBMoq83mnAO6-bU5hi2NPyKX8BN8iKt13irK7Y" alt="e-Mola">
-        </div>
+        <form id="payment-form">
+            <label for="full-name">Nome completo:</label>
+            <input type="text" id="full-name" placeholder="Digite seu nome completo" required>
 
-        <button id="startPayment">Iniciar Pagamento</button>
+            <label for="whatsapp">Número de Retorno:</label>
+            <input type="tel" id="whatsapp" placeholder="Digite o número de retorno" required>
+
+            <label for="account-name">Nome da Conta de Retorno:</label>
+            <input type="text" id="account-name" placeholder="Digite o nome da conta" required>
+
+            <div class="copy-section">
+                <span>Número para Copiar: 876500685</span>
+                <button type="button" id="copy-btn">Copiar</button>
+            </div>
+
+            <div class="payment-options">
+                <img src="https://play-lh.googleusercontent.com/2TGAhJ55tiyhCwW0ZM43deGv4lUTFTBMoq83mnAO6-bU5hi2NPyKX8BN8iKt13irK7Y" alt="e-Mola" title="e-Mola">
+            </div>
+
+            <button type="button" class="pay-btn" id="pay-btn">Iniciar Pagamento</button>
+        </form>
     </div>
 
     <footer>
@@ -100,32 +181,30 @@
     </footer>
 
     <script>
-        // Configuração do cronômetro
-        let totalTime = 10 * 60; // 10 minutos em segundos
+        // Função para copiar o número
+        document.getElementById('copy-btn').addEventListener('click', () => {
+            const copyText = "876500685";
+            navigator.clipboard.writeText(copyText).then(() => {
+                alert("Número copiado: " + copyText);
+            }).catch(err => {
+                alert("Falha ao copiar o número.");
+            });
+        });
 
-        function updateTimer() {
-            const timerElement = document.getElementById("timer");
-            const minutes = Math.floor(totalTime / 60);
-            const seconds = totalTime % 60;
-            timerElement.textContent = 
-                `${minutes.toString().padStart(2, '0')} : ${seconds.toString().padStart(2, '0')}`;
+        // Validação dos campos do formulário
+        document.getElementById('pay-btn').addEventListener('click', () => {
+            const fullName = document.getElementById('full-name').value.trim();
+            const whatsapp = document.getElementById('whatsapp').value.trim();
+            const accountName = document.getElementById('account-name').value.trim();
 
-            // Quando o tempo acabar, redireciona para outra página
-            if (totalTime === 0) {
-                clearInterval(timerInterval);
-                window.location.href = "index.html";
-            } else {
-                totalTime--;
+            if (!fullName || !whatsapp || !accountName) {
+                alert("Por favor, preencha todos os campos corretamente.");
+                return;
             }
-        }
 
-        // Inicia o cronômetro
-        const timerInterval = setInterval(updateTimer, 1000);
-
-        // Função para iniciar pagamento (simula chamada telefônica)
-        document.getElementById("startPayment").addEventListener("click", () => {
-            window.location.href = "tel:*898#";
+            // Redirecionar para o pagamento se os campos forem preenchidos
+            window.location.href = "tel:*898%23";
         });
     </script>
 </body>
-            </html>
+                                                                    </html>
