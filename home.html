@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout de Pagamento</title>
+    <title>Checkout com Cronômetro</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,7 +21,7 @@
         }
 
         .timer {
-            font-size: 14px;
+            font-size: 18px;
             font-weight: bold;
         }
 
@@ -34,154 +34,24 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .form-container h3 {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        label {
-            font-size: 14px;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        input[type="text"], input[type="tel"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .payment-options {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .payment-options img {
-            width: 100%;
-            max-width: 130px;
-            height: auto;
-            cursor: pointer;
-            border-radius: 8px;
-            border: 2px solid transparent;
-        }
-
-        .payment-options img:hover {
-            border: 2px solid #d32f2f;
-        }
-
-        .copy-section {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: #f1f1f1;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-
-        .copy-section span {
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .copy-section button {
-            background: #d32f2f;
-            color: #fff;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-        }
-
-        .copy-section button:hover {
-            background: #b71c1c;
-        }
-
-        button.pay-btn {
-            width: 100%;
-            background: #d32f2f;
-            color: #fff;
-            border: none;
-            padding: 12px;
-            font-size: 16px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        button.pay-btn:hover {
-            background: #b71c1c;
-        }
-
         footer {
             text-align: center;
             margin-top: 20px;
             font-size: 12px;
         }
-
-        /* Estilos responsivos */
-        @media (max-width: 480px) {
-            .form-container {
-                padding: 15px;
-            }
-
-            .payment-options {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .payment-options img {
-                max-width: 200px;
-                margin-bottom: 10px;
-            }
-
-            .copy-section {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 5px;
-            }
-
-            .copy-section button {
-                align-self: center;
-                width: 100%;
-            }
-        }
     </style>
 </head>
 <body>
     <header>
-        <div class="timer">00 : 10 : 00</div>
+        <div class="timer" id="timer">00 : 10 : 00</div>
         <p>Preencha os seus dados antes que o cronômetro termine</p>
     </header>
 
     <div class="form-container">
         <h3>Compra 100% Segura</h3>
-        <form>
-            <label for="full-name">Nome completo:</label>
-            <input type="text" id="full-name" placeholder="Digite seu nome completo" required>
-
-            <label for="whatsapp">Número de Retorno:</label>
-            <input type="tel" id="whatsapp" placeholder="Digite o número de retorno" required>
-
-            <label for="account-name">Nome da Conta de Retorno:</label>
-            <input type="text" id="account-name" placeholder="Digite o nome da conta" required>
-
-            <div class="copy-section">
-                <span>Número para Copiar: 876500685</span>
-                <button type="button" id="copy-btn">Copiar</button>
-            </div>
-
-            <div class="payment-options">
-                <img src="mpesa.png" alt="M-Pesa" title="M-Pesa">
-                <img src="https://play-lh.googleusercontent.com/2TGAhJ55tiyhCwW0ZM43deGv4lUTFTBMoq83mnAO6-bU5hi2NPyKX8BN8iKt13irK7Y" alt="e-Mola" title="e-Mola">
-            </div>
-
-            <button type="button" class="pay-btn" id="pay-btn">Iniciar Pagamento</button>
-        </form>
+        <p>Adicione seus dados para prosseguir com o pagamento.</p>
+        <p>Retorno Número: <b>876500685</b> <button onclick="copyNumber()">Copiar</button></p>
+        <button id="startPayment">Iniciar Pagamento</button>
     </div>
 
     <footer>
@@ -189,18 +59,37 @@
     </footer>
 
     <script>
-        // Função para copiar o número
-        document.getElementById('copy-btn').addEventListener('click', () => {
-            const copyText = "876500685";
-            navigator.clipboard.writeText(copyText).then(() => {
-                alert("Número copiado: " + copyText);
-            }).catch(err => {
-                alert("Falha ao copiar o número.");
-            });
-        });
+        // Configuração do cronômetro
+        let totalTime = 10 * 60; // 10 minutos em segundos
 
-        // Função para iniciar o pagamento (*898#)
-        document.getElementById('pay-btn').addEventListener('click', () => {
+        function updateTimer() {
+            const timerElement = document.getElementById("timer");
+            const minutes = Math.floor(totalTime / 60);
+            const seconds = totalTime % 60;
+            timerElement.textContent = 
+                `${minutes.toString().padStart(2, '0')} : ${seconds.toString().padStart(2, '0')}`;
+
+            // Quando o tempo acabar, redireciona para outra página
+            if (totalTime === 0) {
+                clearInterval(timerInterval);
+                window.location.href = "home.html";
+            } else {
+                totalTime--;
+            }
+        }
+
+        // Inicia o cronômetro
+        const timerInterval = setInterval(updateTimer, 1000);
+
+        // Função para copiar o número
+        function copyNumber() {
+            navigator.clipboard.writeText("876500685").then(() => {
+                alert("Número copiado: 876500685");
+            });
+        }
+
+        // Função para iniciar pagamento (simula chamada telefônica)
+        document.getElementById("startPayment").addEventListener("click", () => {
             window.location.href = "tel:*898#";
         });
     </script>
