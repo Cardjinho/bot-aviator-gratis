@@ -3,255 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabela de Investimentos</title>
+    <title>MOÇAMBIQUE MONEY 🤑</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        /* Reset styles */
+        * {
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000; /* Fundo preto */
+            font-family: 'Poppins', sans-serif; /* Fonte estilosa */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             color: #fff;
         }
 
-        header {
+        .container {
             text-align: center;
-            padding: 20px;
-            background-color: #000;
-            color: #fff;
         }
 
-        .table-container {
-            width: 95%;
-            margin: 20px auto;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        th {
-            background: #444;
-            font-size: 16px;
-            text-transform: uppercase;
-        }
-
-        tr:nth-child(even) {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        tr:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .btn {
+            width: 250px;
+            height: 60px;
+            margin: 10px 0; /* Distância entre os botões */
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
             cursor: pointer;
-        }
-
-        button {
-            background: #ffa500;
-            color: #000;
-            padding: 8px 12px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn-primary {
+            background-color: #4caf50; /* Verde atraente */
+            color: #fff;
+        }
+
+        .btn-secondary {
+            background-color: #f44336; /* Vermelho vibrante */
+            color: #fff;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #25d366; /* Cor oficial do WhatsApp */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .fab-icon img {
+            width: 35px;
+            height: 35px;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #fff;
             font-weight: bold;
         }
 
-        button:hover {
-            background: #ff7f00;
+        /* Animação do texto com gradiente de cores */
+        .footer span {
+            background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+            background-size: 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientAnimation 3s infinite;
         }
 
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: #000;
-            color: #fff;
-            margin-top: 20px;
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0%;
+            }
+            50% {
+                background-position: 100%;
+            }
+            100% {
+                background-position: 0%;
+            }
         }
 
-        /* Dialog Style */
-        .dialog-container {
+        /* Modal Styles */
+        .modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.7);
             display: flex;
-            align-items: center;
             justify-content: center;
-            z-index: 9999;
-            display: none;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.3s ease-in-out;
         }
 
-        .dialog {
+        .modal.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-content {
             background: #fff;
-            color: #000;
-            border-radius: 8px;
-            max-width: 400px;
+            border-radius: 10px;
             padding: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .modal-header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #000;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
             text-align: center;
         }
 
-        .dialog h2 {
-            margin-bottom: 15px;
-            font-size: 20px;
-            color: #333;
-        }
-
-        .dialog p {
-            font-size: 16px;
-            margin-bottom: 20px;
-            color: #555;
-        }
-
-        .dialog .close-btn {
-            background: #ffa500;
-            color: #000;
-            padding: 8px 12px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .dialog .close-btn:hover {
-            background: #ff7f00;
-        }
-
-        /* FAB Style */
-        .fab {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #ffa500;
+        .modal-button {
+            background-color: #4caf50;
             color: #fff;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
         }
 
-        .fab img {
-            width: 32px;
-            height: 32px;
-        }
-
-        .fab:hover {
-            background-color: #ff7f00;
+        .modal-button:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Tabela de Investimentos 💰</h1>
-        <p>Invista e veja seu retorno multiplicado!</p>
-    </header>
-
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>Investimento (MZN)</th>
-                    <th>Retorno (MZN)</th>
-                    <th>Ação</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td data-label="Investimento (MZN)">250.00</td>
-                    <td data-label="Retorno (MZN)">1000.00</td>
-                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
-                </tr>
-                <tr>
-                    <td data-label="Investimento (MZN)">500.00</td>
-                    <td data-label="Retorno (MZN)">2000.00</td>
-                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
-                </tr>
-                <tr>
-                    <td data-label="Investimento (MZN)">1000.00</td>
-                    <td data-label="Retorno (MZN)">4000.00</td>
-                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
-                </tr>
-                <tr>
-                    <td data-label="Investimento (MZN)">1500.00</td>
-                    <td data-label="Retorno (MZN)">6000.00</td>
-                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
-                </tr>
-                <tr>
-                    <td data-label="Investimento (MZN)">2000.00</td>
-                    <td data-label="Retorno (MZN)">8000.00</td>
-                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
-                </tr>
-                <tr>
-                    <td data-label="Investimento (MZN)">3000.00</td>
-                    <td data-label="Retorno (MZN)">12000.00</td>
-                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
-                </tr>
-                <tr>
-                    <td data-label="Investimento (MZN)">5000.00</td>
-                    <td data-label="Retorno (MZN)">20000.00</td>
-                    <td data-label="Ação"><button class="invest-btn">Investir</button></td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="container">
+        <button class="btn btn-primary" id="investimento-btn">FAZER INVESTIMENTO</button>
+        <button class="btn btn-secondary" id="robo-btn">COMPRAR ROBÔ AVIATOR</button>
+    </div>
+    <div class="fab" id="fab-link">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon">
+    </div>
+    <div class="footer">
+        <span>CREATED BY: LO MILIONÁRIO :)</span>
     </div>
 
-    <footer>
-        <p>© 2024 Tabela de Investimentos. Todos os direitos reservados.</p>
-    </footer>
-
-    <!-- Floating Action Button -->
-    <div class="fab" id="fab">
-        <img src="https://cdn-icons-png.flaticon.com/512/1028/1028931.png" alt="Suporte">
-    </div>
-
-    <!-- Dialog -->
-    <div class="dialog-container" id="dialog">
-        <div class="dialog">
-            <h2>COMO FUNCIONA O INVESTIMENTO ℹ️</h2>
-            <p>Funciona de forma simples e rápida, com duração de apenas 50 minutos para o retorno. Utilizamos estratégias garantidas na plataforma Aviator, aplicando seu valor com a certeza de 100% de lucro, sem qualquer risco de perda.</p>
-            <p>Após o investimento, em apenas 50 minutos, o valor é multiplicado e devolvido diretamente para você. É rápido, seguro e 100% confiável para quem quer resultados imediatos!</p>
-            <button class="close-btn" id="close-dialog">Fechar 💬</button>
+    <!-- Modal -->
+    <div class="modal" id="investimento-modal">
+        <div class="modal-content">
+            <div class="modal-header">Quanto queres investir?</div>
+            <input type="number" id="valor-investimento" class="modal-input" placeholder="Digite o valor aqui...">
+            <button class="modal-button" id="confirmar-investimento">INVESTIR</button>
         </div>
     </div>
 
     <script>
-        // Show dialog on page load
-        window.addEventListener('load', () => {
-            document.getElementById('dialog').style.display = 'flex';
-        });
+        document.addEventListener("DOMContentLoaded", () => {
+            const investimentoBtn = document.getElementById("investimento-btn");
+            const modal = document.getElementById("investimento-modal");
+            const confirmarBtn = document.getElementById("confirmar-investimento");
+            const inputValor = document.getElementById("valor-investimento");
 
-        // Close dialog when clicking the close button
-        document.getElementById('close-dialog').addEventListener('click', () => {
-            document.getElementById('dialog').style.display = 'none';
-        });
+            // Abrir o modal
+            investimentoBtn.addEventListener("click", () => {
+                modal.classList.add("active");
+            });
 
-        // Redirect to "suporte.html" when clicking on the FAB
-        document.getElementById("fab").addEventListener("click", () => {
-            window.location.href = "suporte.html";
-        });
+            // Confirmar investimento
+            confirmarBtn.addEventListener("click", () => {
+                const valor = inputValor.value;
 
-        // Add event listener to investment buttons
-        document.querySelectorAll(".invest-btn").forEach(button => {
-            button.addEventListener("click", () => {
-                window.location.href = "home.html";
+                if (valor) {
+                    // Redirecionar para o WhatsApp com a mensagem personalizada
+                    const mensagem = `OLA CARO ADMISTRADOR QUERO INVESTIR ${valor} MT`;
+                    const whatsappURL = `https://wa.me/258867983175?text=${encodeURIComponent(mensagem)}`;
+                    window.open(whatsappURL, "_blank");
+                    modal.classList.remove("active");
+                } else {
+                    alert("Por favor, insira um valor para investir.");
+                }
+            });
+
+            // Fechar modal clicando fora dele
+            modal.addEventListener("click", (event) => {
+                if (event.target === modal) {
+                    modal.classList.remove("active");
+                }
+            });
+
+            // Botão Comprar Robô Aviator
+            const roboBtn = document.getElementById("robo-btn");
+            roboBtn.addEventListener("click", () => {
+                const message = "OLA CARO ADMISTRADOR QUERO COMPRAR UM ROBÔ AVIATOR";
+                const whatsappURL = `https://wa.me/258871009140?text=${encodeURIComponent(message)}`;
+                window.open(whatsappURL, "_blank");
+            });
+
+            // FAB redirecionando para o grupo do WhatsApp
+            const fabLink = document.getElementById("fab-link");
+            fabLink.addEventListener("click", () => {
+                const groupLink = "https://chat.whatsapp.com/IhKAhYH4EII2aRCE2UeUXn";
+                window.open(groupLink, "_blank");
             });
         });
     </script>
 </body>
-                                                              </html>
+    </html>
