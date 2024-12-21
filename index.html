@@ -1,53 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Envio de Mensagens</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        input, button, textarea {
-            margin: 10px 0;
-            padding: 10px;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
-    <h1>Enviar Mensagens de Texto</h1>
-    <form id="uploadForm">
-        <label for="file">Importar arquivo de contatos (CSV):</label>
-        <input type="file" id="file" name="file" accept=".csv" required>
+from flask import Flask, request
+import csv
+from twilio.rest import Client
+import os
+from dotenv import load_dotenv
+
+# Carregar variáveis de ambiente do arquivo .env (se necessário)
+load_dotenv()
+
+# Inicializando o app Flask
+app = Flask(__name__)
+
+# Credenciais da Twilio (substitua pelas suas)
+account_sid = os.getenv("TWILIO_ACCOUNT_SID", "AC93bd21ec53faa0a2af9836c1bfe47894")  # Use .env para não expor
+auth_token = os.getenv("TWILIO_AUTH_TOKEN", "8cbe0a522101cb6a96f2de0329682748")
+twilio_number = os.getenv("TWILIO_PHONE_NUMBER", "+12185035061")
+
+# Cliente da Twilio
+client = Client(account_sid, auth_token)
+
+@app.route('/')
+def home():
+    return open("index.html").read()  # Carregar o arquivo index.html como resposta
+
+@app.route('/send-messages', methods=['POST'])
+def send_messages():
+    try:
+        # Verifica se o arquivo foi enviado
+        if 'file' not in request.files:
+            return "Arquivo não encontrado!", 400
         
-        <label for="message">Mensagem:</label>
-        <textarea id="message" name="message" rows="4" placeholder="Digite sua mensagem aqui..." required></textarea>
+        file = request.files['file']
+        message = request.form['message']
         
-        <button type="submit">Enviar Mensagens</button>
-    </form>
+        # Ler os números do arquivo CSV
+        contacts = []
+        csv_reader = csv.reader(file.stream)
+        for row in csv_reader:
+            if row:  # Evitar adicionar linhas vazias
+                contacts.append(row[0])  # Considera o número da primeira coluna
 
-    <p id="response"></p>
+        # Verifica se há números no arquivo
+        if not contacts:
+            return "Nenhum número encontrado no arquivo!", 400
 
-    <script>
-        document.getElementById("uploadForm").addEventListener("submit", async function (event) {
-            event.preventDefault();
+        # Enviar mensagem para cada número
+        for number in contacts:
+            if number:  # Envia apenas se o número não for vazio
+                client.messages.create(
+                    body=message,
+                    from_=twilio_number,
+                    to=number
+                )
 
-            const fileInput = document.getElementById("file");
-            const message = document.getElementById("message").value;
-            const formData = new FormData();
-            formData.append("file", fileInput.files[0]);
-            formData.append("message", message);
+        return "Mensagens enviadas com sucesso!"
 
-            const response = await fetch("/send-messages", {
-                method: "POST",
-                body: formData,
-            });
+    except Exception as e:
+        return f"Ocorreu um erro: {str(e)}", 500
 
-            const result = await response.text();
-            document.getElementById("response").innerText = result;
-        });
-    </script>
-</body>
-</html>
+
+if __name__ == '__main__':
+    app.run(debug=True)
