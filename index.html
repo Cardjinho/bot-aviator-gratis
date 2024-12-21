@@ -3,237 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOÇAMBIQUE MONEY 🤑</title>
+    <title>Envio de Mensagens</title>
     <style>
-        /* Reset styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            background-color: #000; /* Fundo preto */
-            font-family: 'Poppins', sans-serif; /* Fonte estilosa */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: #fff;
+            font-family: Arial, sans-serif;
+            margin: 20px;
         }
-
-        .container {
-            text-align: center;
-        }
-
-        .btn {
-            width: 250px;
-            height: 60px;
-            margin: 10px 0; /* Distância entre os botões */
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            border: none;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .btn-primary {
-            background-color: #4caf50; /* Verde atraente */
-            color: #fff;
-        }
-
-        .btn-secondary {
-            background-color: #f44336; /* Vermelho vibrante */
-            color: #fff;
-        }
-
-        .btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.3);
-        }
-
-        .fab {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: #25d366; /* Cor oficial do WhatsApp */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.3);
-        }
-
-        .fab-icon img {
-            width: 35px;
-            height: 35px;
-        }
-
-        .footer {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        /* Animação do texto com gradiente de cores */
-        .footer span {
-            background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
-            background-size: 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientAnimation 3s infinite;
-        }
-
-        @keyframes gradientAnimation {
-            0% {
-                background-position: 0%;
-            }
-            50% {
-                background-position: 100%;
-            }
-            100% {
-                background-position: 0%;
-            }
-        }
-
-        /* Modal Styles */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            visibility: hidden;
-            opacity: 0;
-            transition: visibility 0s, opacity 0.3s ease-in-out;
-        }
-
-        .modal.active {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .modal-content {
-            background: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .modal-header {
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #000;
-        }
-
-        .modal-input {
-            width: 100%;
-            padding: 10px;
+        input, button, textarea {
             margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            font-size: 16px;
-            text-align: center;
-        }
-
-        .modal-button {
-            background-color: #4caf50;
-            color: #fff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .modal-button:hover {
-            transform: scale(1.05);
+            padding: 10px;
+            width: 100%;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <button class="btn btn-primary" id="investimento-btn">FAZER INVESTIMENTO</button>
-        <button class="btn btn-secondary" id="robo-btn">COMPRAR ROBÔ AVIATOR</button>
-    </div>
-    <div class="fab" id="fab-link">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Icon">
-    </div>
-    <div class="footer">
-        <span>CREATED BY: LO MILIONÁRIO :)</span>
-    </div>
+    <h1>Enviar Mensagens de Texto</h1>
+    <form id="uploadForm">
+        <label for="file">Importar arquivo de contatos (CSV):</label>
+        <input type="file" id="file" name="file" accept=".csv" required>
+        
+        <label for="message">Mensagem:</label>
+        <textarea id="message" name="message" rows="4" placeholder="Digite sua mensagem aqui..." required></textarea>
+        
+        <button type="submit">Enviar Mensagens</button>
+    </form>
 
-    <!-- Modal -->
-    <div class="modal" id="investimento-modal">
-        <div class="modal-content">
-            <div class="modal-header">Quanto queres investir?</div>
-            <input type="number" id="valor-investimento" class="modal-input" placeholder="Digite o valor aqui...">
-            <button class="modal-button" id="confirmar-investimento">INVESTIR</button>
-        </div>
-    </div>
+    <p id="response"></p>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const investimentoBtn = document.getElementById("investimento-btn");
-            const modal = document.getElementById("investimento-modal");
-            const confirmarBtn = document.getElementById("confirmar-investimento");
-            const inputValor = document.getElementById("valor-investimento");
+        document.getElementById("uploadForm").addEventListener("submit", async function (event) {
+            event.preventDefault();
 
-            // Abrir o modal
-            investimentoBtn.addEventListener("click", () => {
-                modal.classList.add("active");
+            const fileInput = document.getElementById("file");
+            const message = document.getElementById("message").value;
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+            formData.append("message", message);
+
+            const response = await fetch("/send-messages", {
+                method: "POST",
+                body: formData,
             });
 
-            // Confirmar investimento
-            confirmarBtn.addEventListener("click", () => {
-                const valor = inputValor.value;
-
-                if (valor) {
-                    // Redirecionar para o WhatsApp com a mensagem personalizada
-                    const mensagem = `OLA CARO ADMISTRADOR QUERO INVESTIR ${valor} MT`;
-                    const whatsappURL = `https://wa.me/258867983175?text=${encodeURIComponent(mensagem)}`;
-                    window.open(whatsappURL, "_blank");
-                    modal.classList.remove("active");
-                } else {
-                    alert("Por favor, insira um valor para investir.");
-                }
-            });
-
-            // Fechar modal clicando fora dele
-            modal.addEventListener("click", (event) => {
-                if (event.target === modal) {
-                    modal.classList.remove("active");
-                }
-            });
-
-            // Botão Comprar Robô Aviator
-            const roboBtn = document.getElementById("robo-btn");
-            roboBtn.addEventListener("click", () => {
-                const message = "OLA CARO ADMISTRADOR QUERO COMPRAR UM ROBÔ AVIATOR";
-                const whatsappURL = `https://wa.me/258871009140?text=${encodeURIComponent(message)}`;
-                window.open(whatsappURL, "_blank");
-            });
-
-            // FAB redirecionando para o grupo do WhatsApp
-            const fabLink = document.getElementById("fab-link");
-            fabLink.addEventListener("click", () => {
-                const groupLink = "https://chat.whatsapp.com/IhKAhYH4EII2aRCE2UeUXn";
-                window.open(groupLink, "_blank");
-            });
+            const result = await response.text();
+            document.getElementById("response").innerText = result;
         });
     </script>
 </body>
-    </html>
+</html>
