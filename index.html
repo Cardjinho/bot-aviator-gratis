@@ -1,62 +1,85 @@
-from flask import Flask, request
-import csv
-from twilio.rest import Client
-import os
-from dotenv import load_dotenv
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envio de Mensagens</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-# Carregar variáveis de ambiente do arquivo .env (se necessário)
-load_dotenv()
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
 
-# Inicializando o app Flask
-app = Flask(__name__)
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
 
-# Credenciais da Twilio (substitua pelas suas)
-account_sid = os.getenv("TWILIO_ACCOUNT_SID", "AC93bd21ec53faa0a2af9836c1bfe47894")  # Use .env para não expor
-auth_token = os.getenv("TWILIO_AUTH_TOKEN", "8cbe0a522101cb6a96f2de0329682748")
-twilio_number = os.getenv("TWILIO_PHONE_NUMBER", "+12185035061")
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
 
-# Cliente da Twilio
-client = Client(account_sid, auth_token)
+        form {
+            display: flex;
+            flex-direction: column;
+        }
 
-@app.route('/')
-def home():
-    return open("index.html").read()  # Carregar o arquivo index.html como resposta
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
 
-@app.route('/send-messages', methods=['POST'])
-def send_messages():
-    try:
-        # Verifica se o arquivo foi enviado
-        if 'file' not in request.files:
-            return "Arquivo não encontrado!", 400
-        
-        file = request.files['file']
-        message = request.form['message']
-        
-        # Ler os números do arquivo CSV
-        contacts = []
-        csv_reader = csv.reader(file.stream)
-        for row in csv_reader:
-            if row:  # Evitar adicionar linhas vazias
-                contacts.append(row[0])  # Considera o número da primeira coluna
+        input[type="file"],
+        textarea {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
 
-        # Verifica se há números no arquivo
-        if not contacts:
-            return "Nenhum número encontrado no arquivo!", 400
+        button {
+            padding: 12px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-        # Enviar mensagem para cada número
-        for number in contacts:
-            if number:  # Envia apenas se o número não for vazio
-                client.messages.create(
-                    body=message,
-                    from_=twilio_number,
-                    to=number
-                )
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enviar Mensagens em Massa</h1>
+        <form id="sendMessageForm" action="/send-messages" method="POST" enctype="multipart/form-data">
+            <label for="file">Selecione o arquivo CSV:</label>
+            <input type="file" id="file" name="file" required>
 
-        return "Mensagens enviadas com sucesso!"
+            <label for="message">Mensagem para Enviar:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
 
-    except Exception as e:
-        return f"Ocorreu um erro: {str(e)}", 500
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+            <button type="submit">Enviar Mensagens</button>
+        </form>
+    </div>
+</body>
+    </html>
