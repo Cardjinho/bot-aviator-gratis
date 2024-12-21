@@ -1,7 +1,9 @@
 from flask import Flask, request, render_template
-import csv
-from twilio.rest import Client
 import os
+import csv
+import pandas as pd
+from twilio.rest import Client
+from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 
 # Carregar variáveis de ambiente
@@ -18,6 +20,31 @@ twilio_number = os.getenv("TWILIO_PHONE_NUMBER", "+12185035061")
 # Cliente Twilio
 client = Client(account_sid, auth_token)
 
+# Função para processar arquivos CSV
+def process_csv(file):
+    contacts = []
+    csv_file = csv.reader(file.stream.read().decode("utf-8").splitlines())
+    for row in csv_file:
+        if row:  # Ignora linhas vazias
+            contacts.append(row[0])  # Adiciona o número da primeira coluna
+    return contacts
+
+# Função para processar arquivos XLSX
+def process_xlsx(file):
+    contacts = []
+    df = pd.read_excel(file.stream)
+    if 'phone' in df.columns:
+        contacts = df['phone'].dropna().tolist()
+    return contacts
+
+# Função para processar arquivos TXT
+def process_txt(file):
+    contacts = []
+    lines = file.read().decode("utf-8").splitlines()
+    for line in lines:
+        contacts.append(line.strip())  # Adiciona números linha por linha
+    return contacts
+
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -32,12 +59,18 @@ def send_messages():
         file = request.files['file']
         message = request.form['message']
         
-        # Ler os números do arquivo CSV
-        contacts = []
-        csv_reader = csv.reader(file.stream)
-        for row in csv_reader:
-            if row:
-                contacts.append(row[0])
+        # Verificar o tipo de arquivo
+        filename = secure_filename(file.filename)
+        file_extension = filename.rsplit('.', 1)[-1].lower()
+
+        if file_extension == 'csv':
+            contacts = process_csv(file)
+        elif file_extension == 'xlsx':
+            contacts = process_xlsx(file)
+        elif file_extension == 'txt':
+            contacts = process_txt(file)
+        else:
+            return "Formato de arquivo não suportado. Envie um CSV, XLSX ou TXT.", 400
 
         # Verifica se há números no arquivo
         if not contacts:
