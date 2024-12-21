@@ -1,36 +1,51 @@
-from flask import Flask, request
+from flask import Flask, request, render_template
 import csv
 from twilio.rest import Client
+import os
+from dotenv import load_dotenv
 
+# Carregar variáveis de ambiente
+load_dotenv()
+
+# Inicializando o app Flask
 app = Flask(__name__)
 
-# Credenciais da Twilio (Substitua pelos seus dados)
-account_sid = "AC93bd21ec53faa0a2af9836c1bfe47894"
-auth_token = "8cbe0a522101cb6a96f2de0329682748"
-twilio_number = "+12185035061"  # Seu número Twilio
+# Credenciais da Twilio (substitua pelas suas ou use .env)
+account_sid = os.getenv("TWILIO_ACCOUNT_SID", "AC93bd21ec53faa0a2af9836c1bfe47894")
+auth_token = os.getenv("TWILIO_AUTH_TOKEN", "8cbe0a522101cb6a96f2de0329682748")
+twilio_number = os.getenv("TWILIO_PHONE_NUMBER", "+12185035061")
 
+# Cliente Twilio
 client = Client(account_sid, auth_token)
 
 @app.route('/')
 def home():
-    return open("index.html").read()
+    return render_template('index.html')
 
 @app.route('/send-messages', methods=['POST'])
 def send_messages():
     try:
-        # Obter o arquivo CSV e a mensagem
+        # Verifica se o arquivo foi enviado
+        if 'file' not in request.files:
+            return "Arquivo não encontrado!", 400
+        
         file = request.files['file']
         message = request.form['message']
         
-        # Ler números do arquivo CSV
+        # Ler os números do arquivo CSV
         contacts = []
         csv_reader = csv.reader(file.stream)
         for row in csv_reader:
-            contacts.append(row[0])  # Assume que os números estão na primeira coluna
-        
-        # Enviar mensagens
+            if row:
+                contacts.append(row[0])
+
+        # Verifica se há números no arquivo
+        if not contacts:
+            return "Nenhum número encontrado no arquivo!", 400
+
+        # Enviar mensagem para cada número
         for number in contacts:
-            if number:  # Se o número não estiver vazio
+            if number:
                 client.messages.create(
                     body=message,
                     from_=twilio_number,
@@ -41,6 +56,7 @@ def send_messages():
 
     except Exception as e:
         return f"Ocorreu um erro: {str(e)}", 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
