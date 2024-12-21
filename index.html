@@ -1,92 +1,131 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Envio de Mensagens</title>
+    <title>Kirvano</title>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
+        /* Reset */
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-        .container {
-            width: 60%;
-            margin: 50px auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #6c63ff, #bde0fe);
             color: #333;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        label {
+
+        .container {
+            width: 400px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .brand {
+            font-size: 28px;
             font-weight: bold;
+            color: #6c63ff;
+            margin-bottom: 20px;
+        }
+
+        .form {
+            display: none;
+        }
+
+        .form.active {
             display: block;
-            margin-bottom: 10px;
         }
-        input[type="file"] {
+
+        input {
             width: 100%;
-            padding: 10px;
+            padding: 15px;
             margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
         }
-        textarea {
-            width: 100%;
-            height: 150px;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-            resize: vertical;
-        }
+
         button {
             width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
+            padding: 15px;
+            background-color: #6c63ff;
+            color: #fff;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             font-size: 16px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
+
         button:hover {
-            background-color: #45a049;
+            background-color: #5548c2;
         }
-        .message {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 18px;
+
+        .link {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #6c63ff;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .link:hover {
+            color: #5548c2;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            input, button {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
-
-<div class="container">
-    <h1>Enviar Mensagens para Contatos</h1>
-
-    <!-- Formulário para upload de arquivo e mensagem -->
-    <form action="/send-messages" method="POST" enctype="multipart/form-data">
-        <label for="file">Escolha um arquivo de contatos (CSV, XLSX ou TXT):</label>
-        <input type="file" name="file" id="file" required>
-
-        <label for="message">Digite sua mensagem:</label>
-        <textarea name="message" id="message" placeholder="Digite a mensagem que será enviada..." required></textarea>
-
-        <button type="submit">Enviar Mensagens</button>
-    </form>
-
-    <div class="message">
-        {% if message %}
-            <p>{{ message }}</p>
-        {% endif %}
+    <div class="container">
+        <div class="form-container">
+            <h1 class="brand">WELCOME</h1>
+            <div id="form-login" class="form active">
+                <h2>Login</h2>
+                <input type="email" id="login-email" placeholder="Digite seu e-mail">
+                <input type="password" id="login-password" placeholder="Digite sua senha">
+                <button onclick="login()">Entrar</button>
+                <p class="link" onclick="toggleForm('register')">Não tem conta? Cadastre-se</p>
+                <p class="link" onclick="toggleForm('reset')">Esqueceu sua senha?</p>
+            </div>
+            <div id="form-register" class="form">
+                <h2>Cadastro</h2>
+                <input type="text" id="register-name" placeholder="Seu nome">
+                <input type="email" id="register-email" placeholder="Digite seu e-mail">
+                <input type="password" id="register-password" placeholder="Digite sua senha">
+                <button onclick="register()">Cadastrar</button>
+                <p class="link" onclick="toggleForm('login')">Já tem conta? Faça login</p>
+            </div>
+            <div id="form-reset" class="form">
+                <h2>Redefinir Senha</h2>
+                <input type="email" id="reset-email" placeholder="Digite seu e-mail">
+                <button onclick="resetPassword()">Redefinir</button>
+                <p class="link" onclick="toggleForm('login')">Voltar ao Login</p>
+            </div>
+        </div>
     </div>
-</div>
-
+    <script src="firebase-config.js"></script>
+    <script src="auth.js"></script>
 </body>
-</html>
+    </html>
