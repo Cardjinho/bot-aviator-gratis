@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil - Sua Plataforma</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .profile-container {
+      background-color: #1e1e1e;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .profile-container img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+    }
+
+    .profile-container h2 {
+      color: red;
+    }
+
+    .profile-container p {
+      color: #bbb;
+      margin-bottom: 10px;
+    }
+
+    .profile-container button {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+
+    .profile-container button:hover {
+      background-color: #cc0000;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="profile-container">
+    <img src="https://via.placeholder.com/100" alt="Foto de Perfil">
+    <h2>Nome do Usuário</h2>
+    <p>Email: usuario@exemplo.com</p>
+    <p>Seguidores: 120 | Seguindo: 80</p>
+
+    <button onclick="sendMessage()">Enviar Mensagem</button>
+    <button onclick="logout()">Sair</button>
+  </div>
+
+  <script>
+    // Função para enviar mensagem
+    const sendMessage = () => {
+      const message = prompt("Digite sua mensagem:");
+      if (message) {
+        alert(`Mensagem enviada: ${message}`);
+      }
+    };
+
+    // Função para sair da conta
+    const logout = () => {
+      firebase.auth().signOut().then(() => {
+        alert('Você saiu!');
+        window.location.href = 'login.html';
+      });
+    };
+  </script>
+
+</body>
+</html>
