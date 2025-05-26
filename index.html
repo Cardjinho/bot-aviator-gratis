@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login e Cadastro - Sua Plataforma</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-box,
+    .signup-box {
+      background-color: #1e1e1e;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      width: 300px;
+      text-align: center;
+      display: none;
+    }
+
+    h2 {
+      color: red;
+      margin-bottom: 20px;
+    }
+
+    .textbox {
+      margin-bottom: 20px;
+    }
+
+    .textbox input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #333;
+      border-radius: 5px;
+      background-color: #2c2c2c;
+      color: white;
+    }
+
+    .textbox input:focus {
+      border-color: red;
+    }
+
+    input[type="submit"] {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #cc0000;
+    }
+
+    .signup-link {
+      margin-top: 15px;
+      color: #bbb;
+    }
+
+    .signup-link a {
+      color: red;
+      text-decoration: none;
+    }
+
+    .signup-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div id="app"></div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"></script>
+  <script>
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDj1qqCBztEpF31n9UU3DFKwiymc2Bd-iM",
+      authDomain: "bot-ia-20e75.firebaseapp.com",
+      databaseURL: "https://bot-ia-20e75-default-rtdb.firebaseio.com",
+      projectId: "bot-ia-20e75",
+      storageBucket: "bot-ia-20e75.appspot.com",
+      messagingSenderId: "601684351023",
+      appId: "1:601684351023:android:e94d0ab92f512c4cb80eda"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/babel-standalone@7.16.5/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const App = () => {
+      const [isLogin, setIsLogin] = useState(true);
+      const [email, setEmail] = useState('');
+      const [password, setPassword] = useState('');
+      const [name, setName] = useState('');
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        if (isLogin) {
+          auth.signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+              const user = userCredential.user;
+              alert('Bem-vindo, ' + user.email);
+              window.location.href = "home.html"; // Página principal
+            })
+            .catch((error) => {
+              alert(error.message);
+            });
+        } else {
+          auth.createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+              const user = userCredential.user;
+              alert('Conta criada! Bem-vindo, ' + user.email);
+              window.location.href = "home.html"; // Página principal
+            })
+            .catch((error) => {
+              alert(error.message);
+            });
+        }
+      };
+
+      const toggleForm = () => {
+        setIsLogin(!isLogin);
+      };
+
+      return (
+        <div>
+          <div className={`login-box ${isLogin ? '' : 'hidden'}`}>
+            <h2>Entrar</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="textbox">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="E-mail"
+                  required
+                />
+              </div>
+              <div className="textbox">
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Senha"
+                  required
+                />
+              </div>
+              <input type="submit" value="Entrar" />
+              <div className="signup-link">
+                Não tem uma conta? <a href="#" onClick={toggleForm}>Criar conta</a>
+              </div>
+            </form>
+          </div>
+
+          <div className={`signup-box ${!isLogin ? '' : 'hidden'}`}>
+            <h2>Criar Conta</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="textbox">
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Nome Completo"
+                  required
+                />
+              </div>
+              <div className="textbox">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="E-mail"
+                  required
+                />
+              </div>
+              <div className="textbox">
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Senha"
+                  required
+                />
+              </div>
+              <input type="submit" value="Cadastrar" />
+              <div className="signup-link">
+                Já tem uma conta? <a href="#" onClick={toggleForm}>Entrar</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<App />, document.getElementById('app'));
+  </script>
+
+</body>
+
+  </html>
