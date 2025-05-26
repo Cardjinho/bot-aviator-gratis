@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produtos - Sua Plataforma</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+    }
+
+    .navbar {
+      width: 100%;
+      background-color: #1e1e1e;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    .navbar a {
+      color: red;
+      margin: 0 15px;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .product {
+      background-color: #1e1e1e;
+      border-radius: 10px;
+      padding: 20px;
+      width: 250px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .product img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .product h3 {
+      color: red;
+      margin: 10px 0;
+    }
+
+    .product p {
+      color: #bbb;
+    }
+
+    .product button {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .product button:hover {
+      background-color: #cc0000;
+    }
+
+    .logout {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <a href="#">Início</a>
+    <a href="#" class="logout" onclick="firebase.auth().signOut().then(() => {
+      alert('Você saiu!');
+      window.location.href = 'login.html';
+    });">Sair</a>
+  </div>
+
+  <h2>Bem-vindo à Plataforma</h2>
+  <div id="app"></div>
+
+  <div class="products" id="product-list"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDj1qqCBztEpF31n9UU3DFKwiymc2Bd-iM",
+      authDomain: "bot-ia-20e75.firebaseapp.com",
+      databaseURL: "https://bot-ia-20e75-default-rtdb.firebaseio.com",
+      projectId: "bot-ia-20e75",
+      storageBucket: "bot-ia-20e75.appspot.com",
+      messagingSenderId: "601684351023",
+      appId: "1:601684351023:android:e94d0ab92f512c4cb80eda"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const auth = firebase.auth();
+
+    // Carregar produtos do Firebase Realtime Database
+    const loadProducts = () => {
+      const productRef = db.ref('produtos');
+      productRef.on('value', snapshot => {
+        const products = snapshot.val();
+        const productList = document.getElementById("product-list");
+        productList.innerHTML = '';  // Limpa os produtos anteriores
+
+        for (let key in products) {
+          const product = products[key];
+          const productDiv = document.createElement('div');
+          productDiv.classList.add('product');
+          productDiv.innerHTML = `
+            <img src="${product.imageUrl}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p>Preço: MZN ${product.price}</p>
+            <button onclick="redirectToWhatsapp('${product.name}', '${product.price}')">Comprar</button>
+          `;
+          productList.appendChild(productDiv);
+        }
+      });
+    };
+
+    // Redirecionar para o WhatsApp
+    const redirectToWhatsapp = (productName, price) => {
+      const message = `Gostaria de adquirir o produto: ${productName} por MZN ${price}. Por favor, informe o número de pagamento.`;
+      window.open(`https://wa.me/258871009140?text=${encodeURIComponent(message)}`, '_blank');
+    };
+
+    // Carregar os produtos ao carregar a página
+    window.onload = loadProducts;
+  </script>
+
+</body>
+    </html>
