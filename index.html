@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login e Cadastro - Sua Plataforma</title>
+  <title>Login - Sua Plataforma</title>
   <style>
     body {
       background-color: #121212;
@@ -17,84 +16,83 @@
       margin: 0;
     }
 
-    .container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .login-box,
-    .signup-box {
+    .login-container {
       background-color: #1e1e1e;
-      padding: 40px;
+      padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-      width: 300px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .login-container h2 {
       text-align: center;
-      display: none;
-    }
-
-    h2 {
       color: red;
-      margin-bottom: 20px;
     }
 
-    .textbox {
-      margin-bottom: 20px;
-    }
-
-    .textbox input {
+    .login-container input {
       width: 100%;
       padding: 10px;
-      border: 1px solid #333;
-      border-radius: 5px;
-      background-color: #2c2c2c;
+      margin-bottom: 15px;
+      background-color: #333;
       color: white;
+      border: 1px solid #444;
+      border-radius: 5px;
     }
 
-    .textbox input:focus {
-      border-color: red;
-    }
-
-    input[type="submit"] {
+    .login-container button {
+      width: 100%;
+      padding: 12px;
       background-color: red;
-      color: white;
       border: none;
-      padding: 10px;
       border-radius: 5px;
-      cursor: pointer;
+      color: white;
+      font-size: 16px;
     }
 
-    input[type="submit"]:hover {
+    .login-container button:hover {
       background-color: #cc0000;
     }
 
-    .signup-link {
+    .form-switch {
+      text-align: center;
       margin-top: 15px;
-      color: #bbb;
     }
 
-    .signup-link a {
+    .form-switch a {
       color: red;
       text-decoration: none;
     }
 
-    .signup-link a:hover {
+    .form-switch a:hover {
       text-decoration: underline;
     }
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <div id="app"></div>
+
+  <div class="login-container">
+    <h2>Login ou Registro</h2>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Senha" required>
+    <button onclick="handleLogin()">Entrar</button>
+
+    <div class="form-switch">
+      <p>Ainda não tem conta? <a href="#" onclick="showRegisterForm()">Registre-se aqui</a></p>
+    </div>
+
+    <div class="form-switch" id="register-form" style="display: none;">
+      <h3>Criar Conta</h3>
+      <input type="email" id="new-email" placeholder="Email" required>
+      <input type="password" id="new-password" placeholder="Senha" required>
+      <button onclick="handleRegister()">Criar Conta</button>
+      <p>Já tem uma conta? <a href="#" onclick="showLoginForm()">Faça Login</a></p>
+    </div>
   </div>
 
-  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"></script>
   <script>
-    // Configuração do Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyDj1qqCBztEpF31n9UU3DFKwiymc2Bd-iM",
       authDomain: "bot-ia-20e75.firebaseapp.com",
@@ -107,123 +105,39 @@
 
     const app = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-  </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/babel-standalone@7.16.5/babel.min.js"></script>
+    function handleLogin() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      auth.signInWithEmailAndPassword(email, password)
+        .then(userCredential => {
+          alert('Login bem-sucedido!');
+          window.location.href = 'home.html';
+        })
+        .catch(error => alert('Erro ao fazer login: ' + error.message));
+    }
 
-  <script type="text/babel">
-    const { useState } = React;
+    function handleRegister() {
+      const email = document.getElementById("new-email").value;
+      const password = document.getElementById("new-password").value;
+      auth.createUserWithEmailAndPassword(email, password)
+        .then(userCredential => {
+          alert('Conta criada com sucesso!');
+          window.location.href = 'home.html';
+        })
+        .catch(error => alert('Erro ao criar conta: ' + error.message));
+    }
 
-    const App = () => {
-      const [isLogin, setIsLogin] = useState(true);
-      const [email, setEmail] = useState('');
-      const [password, setPassword] = useState('');
-      const [name, setName] = useState('');
+    function showRegisterForm() {
+      document.querySelector('.login-container').style.display = 'none';
+      document.getElementById('register-form').style.display = 'block';
+    }
 
-      const handleSubmit = (e) => {
-        e.preventDefault();
-        if (isLogin) {
-          auth.signInWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-              const user = userCredential.user;
-              alert('Bem-vindo, ' + user.email);
-              window.location.href = "home.html"; // Página principal
-            })
-            .catch((error) => {
-              alert(error.message);
-            });
-        } else {
-          auth.createUserWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-              const user = userCredential.user;
-              alert('Conta criada! Bem-vindo, ' + user.email);
-              window.location.href = "home.html"; // Página principal
-            })
-            .catch((error) => {
-              alert(error.message);
-            });
-        }
-      };
-
-      const toggleForm = () => {
-        setIsLogin(!isLogin);
-      };
-
-      return (
-        <div>
-          <div className={`login-box ${isLogin ? '' : 'hidden'}`}>
-            <h2>Entrar</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="textbox">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="E-mail"
-                  required
-                />
-              </div>
-              <div className="textbox">
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Senha"
-                  required
-                />
-              </div>
-              <input type="submit" value="Entrar" />
-              <div className="signup-link">
-                Não tem uma conta? <a href="#" onClick={toggleForm}>Criar conta</a>
-              </div>
-            </form>
-          </div>
-
-          <div className={`signup-box ${!isLogin ? '' : 'hidden'}`}>
-            <h2>Criar Conta</h2>
-            <form onSubmit={handleSubmit}>
-              <div className="textbox">
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Nome Completo"
-                  required
-                />
-              </div>
-              <div className="textbox">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="E-mail"
-                  required
-                />
-              </div>
-              <div className="textbox">
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Senha"
-                  required
-                />
-              </div>
-              <input type="submit" value="Cadastrar" />
-              <div className="signup-link">
-                Já tem uma conta? <a href="#" onClick={toggleForm}>Entrar</a>
-              </div>
-            </form>
-          </div>
-        </div>
-      );
-    };
-
-    ReactDOM.render(<App />, document.getElementById('app'));
+    function showLoginForm() {
+      document.querySelector('.login-container').style.display = 'block';
+      document.getElementById('register-form').style.display = 'none';
+    }
   </script>
 
 </body>
-
-  </html>
+</html>
