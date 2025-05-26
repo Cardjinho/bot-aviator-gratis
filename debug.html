@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tela Não Encontrada - Debug</title>
+  <style>
+    .debug-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      padding: 10px;
+      font-size: 14px;
+      z-index: 10000;
+      display: block; /* Inicia visível, pois é uma página de erro */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Container de Debug -->
+  <div id="debugContainer" class="debug-container">
+    <h4>Debug - <span id="screenName">Tela Não Encontrada</span></h4>
+    <pre id="debugOutput">Erro: A URL não foi encontrada. Acesse uma URL válida.</pre>
+  </div>
+
+  <script>
+    // Função para exibir informações de debug
+    function logDebugInfo(info, screenName) {
+      const debugContainer = document.getElementById('debugContainer');
+      const debugOutput = document.getElementById('debugOutput');
+      const screenNameElement = document.getElementById('screenName');
+
+      // Se o nome da tela for fornecido, define no cabeçalho
+      screenNameElement.innerText = screenName || 'Tela Desconhecida';
+
+      // Exibe as informações no painel de debug
+      debugOutput.innerText = info;
+    }
+
+    // Detectar URL inválida (tela não encontrada)
+    const currentURL = window.location.pathname;
+
+    // Se a URL não for encontrada, mostrar o painel de debug
+    logDebugInfo(`A URL ${currentURL} não foi encontrada. Verifique se o caminho está correto.`, "Tela Não Encontrada");
+  </script>
+
+</body>
+</html>
