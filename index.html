@@ -1,61 +1,212 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Carregando...</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <title>MozBets - Aviator & Cassinos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    /* Estilo da barra de carregamento */
-    .loading-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background: #0b0b0e; color: white; line-height: 1.6; }
+    header { padding: 20px 30px; background: #0b0b0e; }; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); position: sticky; top: 0; z-index: 99; }
+    .logo { font-size: 1.8rem; color: #ff2c61; font-weight: 800; }
+    nav a { margin-left: 20px; color: white; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; transition: .3s; }
+    nav a:hover { color: #ff2c61; }
+    main { padding: 40px 30px; max-width: 1200px; margin: auto; }
+    h1 { font-size: 2.5rem; color: #ff2c61; margin-bottom: 10px; }
+    h2 { margin-top: 40px; color: #ff496d; }
+    p { color: #ccc; margin-bottom: 15px; }
+    .info-block {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+    }
+    .info-block svg { color: #ff2c61; margin-bottom: 10px; }
+    .button-row { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 20px; }
+    .btn {
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      text-decoration: none;
       display: flex;
-      justify-content: center;
       align-items: center;
+      gap: 10px;
+      transition: 0.3s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-placard { background: #1a73e8; color: white; }
+    .btn-megagame { background: #ff2c61; color: white; }
+    .btn-wpp { background: #25d366; color: white; }
+    .btn-telegram { background: #0088cc; color: white; }
+    footer {
+      margin-top: 50px;
+      padding: 30px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #888;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .dialog-box {
+      position: fixed;
+      bottom: 10px;
+      right: 20px;
+      background: #19191d;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 18px 22px;
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      animation: fadeIn 1s ease;
       z-index: 9999;
     }
+    .dialog-box svg { color: #ff2c61; flex-shrink: 0; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-    .loading-bar {
-      width: 80%;
-      height: 5px;
-      background: #FF5733;
+    .casino-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 25px;
+      margin-top: 30px;
       position: relative;
-      overflow: hidden;
+    }
+    .casino-card h3 {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+    .casino-info {
+      color: #bbb;
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+    }
+    .casino-actions {
+      display: flex;
+      gap: 12px;
+    }
+    .casino-actions .btn {
+      padding: 10px 16px;
+      font-size: 0.9rem;
     }
 
-    .progress {
-      width: 0;
-      height: 100%;
-      background: #FFC300;
-      animation: load 3s forwards;
+    .balloon {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: #1c1c20;
+      border: 1px solid #444;
+      padding: 15px;
+      border-radius: 12px;
+      width: 260px;
+      font-size: 0.85rem;
+      color: #ccc;
+      box-shadow: 0 0 20px rgba(255,44,97,0.2);
+      animation: fadeIn .6s ease-in-out;
+      display: none;
     }
-
-    @keyframes load {
-      0% { width: 0%; }
-      100% { width: 100%; }
-    }
+    .balloon.active { display: block; }
   </style>
 </head>
 <body>
+  <header>
+    <div class="logo"></div>
+    <nav>
+      <a href="#"><i data-lucide="home"></i> Início</a>
+      <a href="#"><i data-lucide="plane"></i> Aviator</a>
+      <a href="#"><i data-lucide="dice-5"></i> Cassino</a>
+    </nav>
+  </header>
 
-  <!-- Barra de carregamento -->
-  <div class="loading-container">
-    <div class="loading-bar">
-      <div class="progress"></div>
+  <main>
+    <h1>Ganhe com o Aviator</h1>
+    <p>Dicas, estratégias e links para jogar com segurança e aumentar suas chances no Aviator.</p>
+
+    <div class="info-block">
+      <i data-lucide="lightbulb"></i>
+      <h2>Como Funciona o Aviator</h2>
+      <p>Aposte e retire antes do avião sumir! O multiplicador aumenta com o tempo. Quanto mais espera, mais você pode ganhar — mas também pode perder tudo.</p>
     </div>
+
+    <div class="info-block">
+      <i data-lucide="activity"></i>
+      <h2>Estratégias</h2>
+      <p>- Aposte valores baixos com saídas em 1.5x<br>
+         - Evite arriscar tudo em uma jogada<br>
+         - Use disciplina e analise o histórico</p>
+    </div>
+
+    <div class="casino-card">
+      <h3><i data-lucide="gamepad-2"></i> Placard MZ</h3>
+      <div class="casino-info">Suporte 24/7 · Levantamentos rápidos · Aviator disponível · Pagamentos via M-Pesa e Emola</div>
+      <div class="casino-actions">
+        <a class="btn btn-placard" href="https://media1.placard.co.mz/redirect.aspx?pid=4241&bid=1690" target="_blank">Visitar o Cassino</a>
+        <button class="btn btn-wpp" onclick="toggleBalloon('placardInfo')">Analisar</button>
+      </div>
+      <div class="balloon" id="placardInfo">
+        🎁 Bônus de 500% no primeiro depósito<br>
+        ✅ Interface profissional<br>
+        🚀 Ideal para Aviator<br>
+        💰 Levantamentos rápidos para Moçambique
+      </div>
+    </div>
+
+    <div class="casino-card">
+      <h3><i data-lucide="gamepad"></i> MegaGameLive</h3>
+      <div class="casino-info">Suporte em tempo real · Cassino completo · Jogo Aviator disponível · Pagamentos locais</div>
+      <div class="casino-actions">
+        <a class="btn btn-megagame" href="https://www.megagamelive.com/affiliates/?btag=2084979" target="_blank">Visitar o Cassino</a>
+        <button class="btn btn-wpp" onclick="toggleBalloon('megaInfo')">Analisar</button>
+      </div>
+      <div class="balloon" id="megaInfo">
+        🎰 Cassino 100% online<br>
+        💬 Atendimento imediato via chat<br>
+        📱 Acesso via app e navegador<br>
+        💳 Pagamento com M-Pesa, Emola e cartões
+      </div>
+    </div>
+
+    <div class="button-row" style="margin-top:40px;">
+      <a class="btn btn-wpp" href="https://wa.me/258848934853" target="_blank"><i data-lucide="message-circle"></i> WhatsApp Grupo</a>
+      <a class="btn btn-telegram" href="https://t.me/milionariomrx" target="_blank"><i data-lucide="send"></i> Telegram Grupo</a>
+    </div>
+  </main>
+
+  <footer>
+    © 2025 MozBets. Todos os direitos reservados.
+  </footer>
+
+  <div class="dialog-box" id="floatingMessage">
+    <i data-lucide="bell"></i>
+    <span><strong>Junte-se aos nossos grupos de sinais</strong>: WhatsApp e Telegram já disponíveis!</span>
   </div>
 
   <script>
-    // Função que redireciona após o carregamento
-    setTimeout(function() {
-      window.location.href = "login.html";  // Redireciona para a tela de login após 3 segundos
-    }, 3000); // Tempo de espera de 3 segundos
-  </script>
+    lucide.createIcons();
 
+    const messages = [
+      "Junte-se aos nossos grupos de sinais: WhatsApp e Telegram!",
+      "Aposte com responsabilidade. Veja nossas estratégias exclusivas do Aviator.",
+      "Cassino completo disponível: Slots, Roleta, Poker ao vivo e mais!",
+      "Novo bônus de 500% nos primeiros depósitos — confira agora!",
+    ];
+    let msgIndex = 0;
+    setInterval(() => {
+      document.querySelector("#floatingMessage span").innerText = messages[msgIndex];
+      msgIndex = (msgIndex + 1) % messages.length;
+    }, 30000);
+
+    function toggleBalloon(id) {
+      const balloon = document.getElementById(id);
+      balloon.classList.toggle('active');
+    }
+  </script>
 </body>
-</html>
+  </html>
